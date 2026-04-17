@@ -1,17 +1,97 @@
 ---
-
+import CourseNav from "../components/CourseNav.astro";
+import CourseLayout from "../layouts/CourseLayout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import CategoryCard from "../components/CategoryCard.astro";
+import HeroProduct from "../components/HeroProduct.astro";
+import ProductCard from "../components/ProductCard.astro";
+import SellingSteps from "../components/SellingSteps.astro";
+import ScenarioCard from "../components/ScenarioCard.astro";
+import { courseData } from "../data/brabantia-course";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<CourseLayout title={courseData.title}>
+	<div id="top"></div>
+  <CourseNav />
+  <HeroSection
+    title={courseData.title}
+    subtitle={courseData.subtitle}
+    points={courseData.brandPoints}
+  />
+
+  <section
+    class="section"
+    id="range-overview"
+    style="background:rgba(255,255,255,0.42);"
+  >
+    <div class="container">
+      <div class="lesson-shell reveal">
+        <span class="editorial-kicker">Lesson 2</span>
+        <h2 class="section-title">Explore the Range</h2>
+        <p class="section-copy">
+          Discover the Brabantia assortment across key lifestyle categories.
+          Start with HERO products, then use NEW products to extend the conversation
+          and build a more aspirational recommendation.
+        </p>
+        <div class="divider"></div>
+      </div>
+
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin:1.5rem 0 2rem;">
+        {courseData.rangeTags.map((tag) => (
+          <div class="card range-tag-card">
+            <strong>{tag.label}:</strong> {tag.meaning}
+          </div>
+        ))}
+      </div>
+
+      <div class="grid-3">
+        {courseData.categories.map((category) => (
+          <CategoryCard
+            id={category.id}
+            title={category.title}
+            intro={category.intro}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {courseData.categories.map((category, categoryIndex) => (
+    <section
+      class="section"
+      id={category.id}
+      style={`background:${categoryIndex % 2 === 0 ? "transparent" : "rgba(255,255,255,0.45)"};`}
+    >
+      <div class="container">
+        <div class="lesson-shell reveal">
+          <span class="editorial-kicker">Lesson {categoryIndex + 3}</span>
+          <h2 class="section-title">{category.title}</h2>
+          <p class="section-copy">{category.intro}</p>
+          <div class="divider"></div>
+        </div>
+
+        <div style="margin-top:2rem;">
+          <HeroProduct product={category.heroProduct} />
+        </div>
+
+        <div class="grid-3" style="margin-top:1.5rem;">
+          {category.products.map((product, index) => (
+            <ProductCard
+              product={product}
+              index={index + categoryIndex * 10}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <SellingSteps steps={courseData.sellingSteps} />
+
+  <ScenarioCard
+    question={courseData.scenario.question}
+    options={courseData.scenario.options}
+    correctIndex={courseData.scenario.correctIndex}
+    feedback={courseData.scenario.feedback}
+  />
+</CourseLayout>

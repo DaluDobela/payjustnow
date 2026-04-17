@@ -1,0 +1,31 @@
+<nav class="course-nav">
+  <div class="container course-nav-inner">
+    <a href="#top" class="course-nav-brand">Brabantia</a>
+
+    <button
+      class="course-nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="course-nav-menu"
+      onclick="
+        const menu = document.getElementById('course-nav-menu');
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', String(!expanded));
+        menu.classList.toggle('open', !expanded);
+      "
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div id="course-nav-menu" class="course-nav-links">
+      <a href="#range-overview">Range</a>
+      <a href="#kitchen-appliances">Kitchen</a>
+      <a href="#garment-care">Garment Care</a>
+      <a href="#home-solutions">Home Solutions</a>
+      <a href="#selling-method">How to Sell</a>
+      <a href="#scenario-activity">Activity</a>
+    </div>
+  </div>
+</nav>

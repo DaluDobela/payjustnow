@@ -1,0 +1,40 @@
+---
+interface Step {
+  title: string;
+  body: string[];
+}
+
+interface Props {
+  steps: Step[];
+}
+
+const { steps } = Astro.props;
+---
+
+<section
+  class="section"
+  id="selling-method"
+  style="background:rgba(255,255,255,0.42);"
+>
+  <div class="container">
+    <div class="lesson-shell reveal">
+      <span class="editorial-kicker">Lesson 6</span>
+      <h2 class="section-title">How to Sell Brabantia</h2>
+      <p class="section-copy">
+        Use a simple, repeatable method to guide the conversation and connect product benefits to real customer needs.
+      </p>
+      <div class="divider"></div>
+    </div>
+
+    <div class="grid-3" style="margin-top:2rem;">
+      {steps.map((step) => (
+        <div class="card card-hover" style="padding:1.6rem; background:rgba(255,255,255,0.88);">
+          <h3 style="margin-top:0; margin-bottom:0.9rem; font-size:1.25rem;">{step.title}</h3>
+          <ul class="product-list">
+            {step.body.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

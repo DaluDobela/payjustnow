@@ -1,0 +1,50 @@
+---
+import type { Product } from "../data/brabantia-course";
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+<div class="card card-hover hero-product-card">
+  <div class="hero-product-grid">
+    <div class="hero-product-image-wrap">
+      <img
+        src={product.image}
+        alt={product.name}
+        class="hero-product-image"
+      />
+    </div>
+
+    <div class="hero-product-content">
+      <div class="hero-product-top">
+        {product.tag && (
+          <span class={`tag ${product.tag === "HERO" ? "hero" : "new"}`}>
+            {product.tag}
+          </span>
+        )}
+        <span class="pill product-pill">Featured Product</span>
+      </div>
+
+      <h3 class="hero-product-title">{product.name}</h3>
+      <p class="hero-product-description">{product.description}</p>
+
+      <ul class="product-list">
+        {product.benefits.map((benefit) => <li>{benefit}</li>)}
+      </ul>
+
+      <div class="tip-box">
+        <strong>Selling Tip:</strong> {product.sellingTip}
+      </div>
+
+      <div class="recommend-box">
+        <strong>When to recommend:</strong>
+        <ul class="product-list">
+          {product.recommendWhen.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

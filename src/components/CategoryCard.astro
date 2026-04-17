@@ -1,0 +1,25 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  intro: string;
+}
+
+const { id, title, intro } = Astro.props;
+---
+
+<a
+  href={`#${id}`}
+  class="card card-hover category-card"
+>
+  <div class="category-card-inner">
+    <div class="category-chip">Range Category</div>
+
+    <div>
+      <h3 class="category-title">{title}</h3>
+      <p class="category-copy">{intro}</p>
+    </div>
+
+    <span class="category-link">Explore category</span>
+  </div>
+</a>

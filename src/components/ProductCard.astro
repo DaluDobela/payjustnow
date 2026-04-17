@@ -1,0 +1,60 @@
+---
+import type { Product } from "../data/brabantia-course";
+
+interface Props {
+  product: Product;
+  index: number;
+}
+
+const { product, index } = Astro.props;
+const detailsId = `product-details-${index}`;
+const cardId = `product-card-${index}`;
+---
+
+<div id={cardId} class="card card-hover product-card">
+  <div class="product-image-wrap">
+    <img
+      src={product.image}
+      alt={product.name}
+      class="product-image"
+    />
+  </div>
+
+  <div class="product-content">
+    <div class="product-top-row">
+      <h4 class="product-title">{product.name}</h4>
+      {product.tag && (
+        <span class={`tag ${product.tag === "HERO" ? "hero" : "new"}`}>{product.tag}</span>
+      )}
+    </div>
+
+    <p class="product-description">{product.description}</p>
+
+    <button
+      type="button"
+      aria-expanded="false"
+      aria-controls={detailsId}
+      class="product-button"
+      onclick={`const card = document.getElementById('${cardId}'); const el = document.getElementById('${detailsId}'); const expanded = this.getAttribute('aria-expanded') === 'true'; card.classList.toggle('open', !expanded); this.setAttribute('aria-expanded', String(!expanded)); this.textContent = expanded ? 'View details' : 'Hide details';`}
+    >
+      View details
+    </button>
+
+    <div id={detailsId} class="product-details">
+      <ul class="product-list">
+        {product.benefits.map((benefit) => <li>{benefit}</li>)}
+      </ul>
+
+      <div class="tip-box">
+        <strong>Selling Tip:</strong> {product.sellingTip}
+      </div>
+
+      <div class="recommend-box">
+        <strong>When to recommend:</strong>
+        <ul class="product-list">
+          {product.recommendWhen.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

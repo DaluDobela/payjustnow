@@ -1,0 +1,46 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  points: string[];
+}
+
+const { title, subtitle, points } = Astro.props;
+---
+
+<section class="section hero-section hero-section-main">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="container hero-inner">
+    <div class="hero-main-grid">
+      <div class="hero-copy">
+        <div class="pill hero-pill reveal">Luxury Retail Product Training</div>
+
+        <h1 class="section-title hero-main-title reveal delay-1">
+          {title}
+        </h1>
+
+        <p class="hero-main-subtitle reveal delay-2">
+          {subtitle}
+        </p>
+
+        <ul class="hero-main-points reveal delay-3">
+          {points.map((point) => <li>{point}</li>)}
+        </ul>
+
+        <a href="#range-overview" class="hero-cta reveal delay-3">
+          Start Learning
+        </a>
+      </div>
+
+      <div class="card reveal delay-2 hero-logo-panel">
+        <img
+          src="/images/brabantia-logo.png"
+          alt="Brabantia logo"
+          class="hero-logo-image"
+        />
+      </div>
+    </div>
+  </div>
+</section>
