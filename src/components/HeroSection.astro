@@ -8,14 +8,22 @@ interface Props {
 const { title, subtitle, points } = Astro.props;
 ---
 
-<section class="section hero-section hero-section-main">
+<section class="section hero-section hero-section-main scroll-mt-28">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <div class="absolute -left-24 top-12 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.12),rgba(255,255,255,0.03)_48%,transparent_76%)] blur-3xl"></div>
+    <div class="absolute right-[-4rem] top-1/4 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(226,232,240,0.16),rgba(226,232,240,0.04)_46%,transparent_74%)] blur-3xl"></div>
+    <div
+      class="absolute inset-x-0 bottom-0 h-56 opacity-[0.08]"
+      style={`background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='320' viewBox='0 0 1400 320' fill='none'%3E%3Cpath d='M-40 208c151-76 306-94 475-42 157 49 292 52 432 8 152-48 297-40 533 16' stroke='white' stroke-width='1.4' stroke-opacity='0.42'/%3E%3Cpath d='M-20 264c181-68 339-76 509-22 139 44 273 46 408 7 148-43 293-33 543 28' stroke='%23e2e8f0' stroke-width='1.2' stroke-opacity='0.38'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center bottom;background-size:cover;`}
+    ></div>
+  </div>
 
   <div class="container hero-inner">
     <div class="hero-main-grid">
-      <div class="hero-copy">
-        <div class="pill hero-pill reveal">Luxury Retail Product Training</div>
+      <div class="hero-copy flex flex-col items-start">
+        <div class="pill hero-pill reveal w-fit">Luxury Retail Product Training</div>
 
         <h1 class="section-title hero-main-title reveal delay-1">
           {title}
@@ -25,20 +33,20 @@ const { title, subtitle, points } = Astro.props;
           {subtitle}
         </p>
 
-        <ul class="hero-main-points reveal delay-3">
+        <ul class="hero-main-points reveal delay-3 space-y-1">
           {points.map((point) => <li>{point}</li>)}
         </ul>
 
-        <a href="#range-overview" class="hero-cta reveal delay-3">
+        <a href="#range-overview" class="hero-cta reveal delay-3 inline-flex items-center justify-center">
           Start Learning
         </a>
       </div>
 
-      <div class="card reveal delay-2 hero-logo-panel">
+      <div class="card reveal delay-2 hero-logo-panel mx-auto md:mx-0">
         <img
           src="/images/brabantia-logo.png"
           alt="Brabantia logo"
-          class="hero-logo-image"
+          class="hero-logo-image h-auto mx-auto"
         />
       </div>
     </div>

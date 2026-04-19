@@ -12,11 +12,11 @@ const cardId = `product-card-${index}`;
 ---
 
 <div id={cardId} class="card card-hover product-card">
-  <div class="product-image-wrap">
+  <div class="product-image-wrap w-full">
     <img
       src={product.image}
       alt={product.name}
-      class="product-image"
+      class="product-image h-auto"
     />
   </div>
 
@@ -34,22 +34,22 @@ const cardId = `product-card-${index}`;
       type="button"
       aria-expanded="false"
       aria-controls={detailsId}
-      class="product-button"
+      class="product-button mt-auto inline-flex items-center justify-center"
       onclick={`const card = document.getElementById('${cardId}'); const el = document.getElementById('${detailsId}'); const expanded = this.getAttribute('aria-expanded') === 'true'; card.classList.toggle('open', !expanded); this.setAttribute('aria-expanded', String(!expanded)); this.textContent = expanded ? 'View details' : 'Hide details';`}
     >
       View details
     </button>
 
-    <div id={detailsId} class="product-details">
+    <div id={detailsId} class="product-details w-full">
       <ul class="product-list">
         {product.benefits.map((benefit) => <li>{benefit}</li>)}
       </ul>
 
-      <div class="tip-box">
+      <div class="tip-box w-full">
         <strong>Selling Tip:</strong> {product.sellingTip}
       </div>
 
-      <div class="recommend-box">
+      <div class="recommend-box w-full">
         <strong>When to recommend:</strong>
         <ul class="product-list">
           {product.recommendWhen.map((item) => <li>{item}</li>)}

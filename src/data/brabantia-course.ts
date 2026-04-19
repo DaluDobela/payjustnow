@@ -16,6 +16,13 @@ export type Category = {
   products: Product[];
 };
 
+export type ScenarioQuestion = {
+  question: string;
+  options: string[];
+  correctIndex: number;
+  feedback: string;
+};
+
 export const courseData = {
   title: "Brabantia: Designed for Living",
   subtitle:
@@ -342,29 +349,95 @@ export const courseData = {
     {
       title: "2. Match",
       body: [
-        "Cooking and prep needs → Kitchen Appliances",
-        "Clothing care needs → Garment Care",
-        "Comfort and convenience needs → Home Solutions",
+        "Cooking and prep needs -> Kitchen Appliances",
+        "Clothing care needs -> Garment Care",
+        "Comfort and convenience needs -> Home Solutions",
       ],
     },
     {
-      title: "3. Elevate",
+      title: "3. Compare",
+      body: [
+        "Show the customer the option that best fits their space, routine, or style.",
+        "Explain why one product is a better match than a more basic or larger alternative.",
+      ],
+    },
+    {
+      title: "4. Elevate",
       body: [
         "Use premium language.",
         "Connect the product to a better way of living.",
       ],
     },
+    {
+      title: "5. Handle Objections",
+      body: [
+        "If the customer says it is too expensive, bring the conversation back to design, ease, and long-term value.",
+        "If they want something basic, show how Brabantia adds convenience and a more premium everyday experience.",
+      ],
+    },
   ],
   scenario: {
-    question:
-      "A customer says: “I’ve just moved into a new apartment and want appliances that feel modern, practical, and easy to use.” What do you recommend?",
-    options: [
-      "One basic item only",
-      "A coordinated Brabantia appliance and home solution set",
-      "The cheapest option available",
-    ],
-    correctIndex: 1,
-    feedback:
-      "Correct. This recommendation matches the customer’s lifestyle need, adds more value, and positions Brabantia as a premium home solution brand.",
+    questions: [
+      {
+        question:
+          "A customer says: \"I've just moved into a new apartment and want appliances that feel modern, practical, and easy to use.\" What do you recommend?",
+        options: [
+          "One basic item only",
+          "A coordinated Brabantia appliance and home solution set",
+          "The cheapest option available",
+        ],
+        correctIndex: 1,
+        feedback:
+          "Correct. This recommendation matches the customer's lifestyle need, adds more value, and positions Brabantia as a premium home solution brand.",
+      },
+      {
+        question:
+          "A customer wants quicker weekday meals and says they are trying to cook with less oil. Which product is the best match?",
+        options: [
+          "Brabantia 5L Airfryer Black",
+          "Brabantia 1.7L Glass Kettle",
+          "Brabantia 2 Slice Toaster Stainless Steel",
+        ],
+        correctIndex: 0,
+        feedback:
+          "Correct. The airfryer best matches the customer's need for faster cooking and less-oil meal preparation.",
+      },
+      {
+        question:
+          "A customer says they need something simple for quick touch-ups before work and do not want a full ironing routine every day. What should you recommend?",
+        options: [
+          "Brabantia Steam Iron Full Function 2400W",
+          "Brabantia Hand Held Garment Steamer",
+          "Brabantia Cordless Vacuum Cleaner",
+        ],
+        correctIndex: 1,
+        feedback:
+          "Correct. The hand held garment steamer is the strongest fit for quick daily touch-ups and convenient garment refreshes.",
+      },
+      {
+        question:
+          "A customer is choosing between the Brabantia 30CM Table Fan and the Brabantia 40cm Stand Fan. They want airflow for a small desk area. Which option is the better match?",
+        options: [
+          "Brabantia 40cm Stand Fan",
+          "Either option because they do the same job",
+          "Brabantia 30CM Table Fan",
+        ],
+        correctIndex: 2,
+        feedback:
+          "Correct. The table fan is the better fit for a smaller personal space, while the stand fan is better when broader airflow is needed.",
+      },
+      {
+        question:
+          "A customer says, \"I want something that makes home life feel a bit more premium, not just practical.\" Which recommendation creates the most aspirational sale?",
+        options: [
+          "Brabantia Towel Warmer",
+          "One basic kettle",
+          "The cheapest fan available",
+        ],
+        correctIndex: 0,
+        feedback:
+          "Correct. The towel warmer is a strong aspirational recommendation because it adds comfort, lifestyle appeal, and a more premium home experience.",
+      },
+    ] as ScenarioQuestion[],
   },
 };

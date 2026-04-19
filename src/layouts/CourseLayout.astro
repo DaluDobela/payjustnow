@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 const { title = "Brabantia Quick Course" } = Astro.props;
 ---
 
@@ -24,8 +26,8 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         --ice-blue: #d6e8f3;
         --platinum: #dadede;
 
-        --accent: #e1251b;
-        --accent-soft: rgba(225, 37, 27, 0.08);
+        --accent: #0f172a;
+        --accent-soft: rgba(15, 23, 42, 0.08);
 
         --shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
         --radius: 28px;
@@ -42,12 +44,21 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       body {
         margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: "Arial Nova", Arial, Helvetica, sans-serif;
         color: var(--text);
+        position: relative;
+        overflow-x: hidden;
         background:
           radial-gradient(circle at top right, rgba(79, 127, 139, 0.15), transparent 40%),
           radial-gradient(circle at bottom left, rgba(176, 200, 209, 0.2), transparent 45%),
           linear-gradient(to bottom, #ffffff, var(--bg));
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
       }
 
       .container {
@@ -80,6 +91,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
   font-weight: 800;
   letter-spacing: -0.02em;
   font-size: 1.05rem;
+  max-width: 100%;
 }
 
 .course-nav-toggle {
@@ -111,6 +123,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
   flex-wrap: wrap;
   gap: 0.4rem;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .course-nav-links a {
@@ -267,7 +280,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
       }
 
       .tag.hero {
-        background: rgba(225, 37, 27, 0.1);
+        background: rgba(226, 232, 240, 0.9);
         color: var(--accent);
       }
 
@@ -277,13 +290,13 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .grid-3 {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1.4rem;
       }
 
       .grid-2 {
         display: grid;
-        grid-template-columns: 1.08fr 0.92fr;
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
         gap: 1.6rem;
       }
 
@@ -398,6 +411,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         display: flex;
         flex-direction: column;
         flex: 1;
+        min-width: 0;
       }
 
       .product-top-row {
@@ -405,6 +419,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         gap: 0.75rem;
         justify-content: space-between;
         align-items: start;
+        flex-wrap: wrap;
       }
 
       .product-title {
@@ -539,13 +554,14 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .hero-main-grid {
         display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
         gap: 2rem;
         align-items: center;
       }
 
       .hero-copy {
         padding-right: 1rem;
+        min-width: 0;
       }
 
       .hero-main-title {
@@ -584,6 +600,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         max-width: 520px;
         width: 100%;
         min-height: 420px;
+        height: 100%;
         display: grid;
         place-items: center;
         padding: 2.5rem;
@@ -607,7 +624,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .hero-product-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         align-items: stretch;
       }
 
@@ -629,6 +646,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .hero-product-content {
         padding: 2rem;
+        min-width: 0;
       }
 
       .hero-product-top {
@@ -728,9 +746,65 @@ const { title = "Brabantia Quick Course" } = Astro.props;
             );
         }
       }
+
+      @media (max-width: 1100px) and (min-width: 901px) {
+        .grid-3 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
     </style>
   </head>
   <body>
-    <slot />
+    <div class="page-decor pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div class="absolute left-[-8rem] top-24 h-[24rem] w-[24rem] rounded-full bg-[radial-gradient(circle,rgba(226,232,240,0.5),rgba(226,232,240,0.12)_42%,transparent_72%)] blur-3xl"></div>
+      <div class="absolute right-[-10rem] top-[28rem] h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(203,213,225,0.42),rgba(203,213,225,0.08)_46%,transparent_74%)] blur-3xl"></div>
+      <div class="absolute bottom-[12rem] left-1/2 h-[26rem] w-[26rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.5),rgba(255,255,255,0.12)_48%,transparent_76%)] blur-3xl"></div>
+      <div
+        class="absolute inset-x-0 top-0 h-[36rem] opacity-[0.06]"
+        style={`background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='560' viewBox='0 0 1400 560' fill='none'%3E%3Cpath d='M-80 196C86 110 241 95 415 138c126 31 219 28 333-8 130-41 259-38 397 4 129 39 240 41 415-14' stroke='%2394a3b8' stroke-width='1.5' stroke-opacity='0.55'/%3E%3Cpath d='M-120 318c176-70 336-78 512-22 132 42 247 44 367 3 128-43 248-36 388 4 118 34 227 33 373-14' stroke='%23cbd5e1' stroke-width='1.5' stroke-opacity='0.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center top;background-size:cover;`}
+      ></div>
+    </div>
+
+    <div class="relative z-10">
+      <slot />
+    </div>
+
+    <button
+      type="button"
+      class="hidden fixed bottom-6 right-6 z-50 rounded-full shadow-lg bg-slate-900 text-white p-3 transition hover:-translate-y-1"
+      aria-label="Back to top"
+      data-back-to-top
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        class="h-5 w-5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+
+    <script is:inline>
+      const backToTopButton = document.querySelector("[data-back-to-top]");
+
+      if (backToTopButton) {
+        const toggleBackToTop = () => {
+          backToTopButton.classList.toggle("hidden", window.scrollY < 300);
+        };
+
+        window.addEventListener("scroll", toggleBackToTop, { passive: true });
+
+        backToTopButton.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        toggleBackToTop();
+      }
+    </script>
   </body>
 </html>

@@ -10,16 +10,16 @@ const { product } = Astro.props;
 
 <div class="card card-hover hero-product-card">
   <div class="hero-product-grid">
-    <div class="hero-product-image-wrap">
+    <div class="hero-product-image-wrap w-full">
       <img
         src={product.image}
         alt={product.name}
-        class="hero-product-image"
+        class="hero-product-image h-auto"
       />
     </div>
 
-    <div class="hero-product-content">
-      <div class="hero-product-top">
+    <div class="hero-product-content flex h-full flex-col justify-center">
+      <div class="hero-product-top justify-start">
         {product.tag && (
           <span class={`tag ${product.tag === "HERO" ? "hero" : "new"}`}>
             {product.tag}
@@ -35,11 +35,11 @@ const { product } = Astro.props;
         {product.benefits.map((benefit) => <li>{benefit}</li>)}
       </ul>
 
-      <div class="tip-box">
+      <div class="tip-box w-full">
         <strong>Selling Tip:</strong> {product.sellingTip}
       </div>
 
-      <div class="recommend-box">
+      <div class="recommend-box w-full">
         <strong>When to recommend:</strong>
         <ul class="product-list">
           {product.recommendWhen.map((item) => <li>{item}</li>)}

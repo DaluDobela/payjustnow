@@ -20,7 +20,7 @@ import { courseData } from "../data/brabantia-course";
   />
 
   <section
-    class="section"
+    class="section scroll-mt-28"
     id="range-overview"
     style="background:rgba(255,255,255,0.42);"
   >
@@ -36,15 +36,15 @@ import { courseData } from "../data/brabantia-course";
         <div class="divider"></div>
       </div>
 
-      <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin:1.5rem 0 2rem;">
+      <div class="mt-6 mb-8 flex flex-wrap gap-3 md:mt-8">
         {courseData.rangeTags.map((tag) => (
-          <div class="card range-tag-card">
+          <div class="card range-tag-card grow sm:grow-0">
             <strong>{tag.label}:</strong> {tag.meaning}
           </div>
         ))}
       </div>
 
-      <div class="grid-3">
+      <div class="grid-3 items-stretch">
         {courseData.categories.map((category) => (
           <CategoryCard
             id={category.id}
@@ -58,7 +58,7 @@ import { courseData } from "../data/brabantia-course";
 
   {courseData.categories.map((category, categoryIndex) => (
     <section
-      class="section"
+      class="section scroll-mt-28"
       id={category.id}
       style={`background:${categoryIndex % 2 === 0 ? "transparent" : "rgba(255,255,255,0.45)"};`}
     >
@@ -70,11 +70,11 @@ import { courseData } from "../data/brabantia-course";
           <div class="divider"></div>
         </div>
 
-        <div style="margin-top:2rem;">
+        <div class="mt-8">
           <HeroProduct product={category.heroProduct} />
         </div>
 
-        <div class="grid-3" style="margin-top:1.5rem;">
+        <div class="grid-3 mt-6 items-stretch md:mt-8">
           {category.products.map((product, index) => (
             <ProductCard
               product={product}
@@ -89,9 +89,25 @@ import { courseData } from "../data/brabantia-course";
   <SellingSteps steps={courseData.sellingSteps} />
 
   <ScenarioCard
-    question={courseData.scenario.question}
-    options={courseData.scenario.options}
-    correctIndex={courseData.scenario.correctIndex}
-    feedback={courseData.scenario.feedback}
+    questions={courseData.scenario.questions}
   />
+
+  <section class="border-t border-slate-200 bg-slate-50 py-16">
+    <div class="container">
+      <div class="mx-auto flex max-w-3xl flex-col items-center justify-center text-center">
+        <p class="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">
+          Course Complete
+        </p>
+        <h2 class="mt-4 text-3xl font-bold tracking-[-0.02em] text-slate-900 md:text-4xl">
+          You've completed the course
+        </h2>
+        <a
+          href="#"
+          class="mt-8 inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-3 text-white shadow-md transition hover:-translate-y-0.5"
+        >
+          Return to People Connect
+        </a>
+      </div>
+    </div>
+  </section>
 </CourseLayout>
