@@ -41,7 +41,7 @@ const cardId = `product-card-${index}`;
     </button>
 
     <div id={detailsId} class="product-details w-full">
-      <ul class="product-list">
+      <ul class="product-list product-benefits-list">
         {product.benefits.map((benefit) => <li>{benefit}</li>)}
       </ul>
 
@@ -51,7 +51,7 @@ const cardId = `product-card-${index}`;
 
       <div class="recommend-box w-full">
         <strong>When to recommend:</strong>
-        <ul class="product-list">
+        <ul class="product-list product-recommend-list">
           {product.recommendWhen.map((item) => <li>{item}</li>)}
         </ul>
       </div>

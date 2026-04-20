@@ -32,6 +32,14 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         --shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
         --radius: 28px;
         --max: 1200px;
+
+        --type-hero: 36px;
+        --type-title: 24px;
+        --type-product: 24px;
+        --leading-product: 35px;
+        --type-body: 18px;
+        --type-ui: 14px;
+        --type-label: 12px;
       }
 
       * {
@@ -45,6 +53,8 @@ const { title = "Brabantia Quick Course" } = Astro.props;
       body {
         margin: 0;
         font-family: "Arial Nova", Arial, Helvetica, sans-serif;
+        font-size: var(--type-body);
+        line-height: 1.7;
         color: var(--text);
         position: relative;
         overflow-x: hidden;
@@ -90,7 +100,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
   color: var(--text);
   font-weight: 800;
   letter-spacing: -0.02em;
-  font-size: 1.05rem;
+  font-size: var(--type-ui);
   max-width: 100%;
 }
 
@@ -129,7 +139,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 .course-nav-links a {
   text-decoration: none;
   color: var(--text);
-  font-size: 0.92rem;
+  font-size: var(--type-ui);
   font-weight: 700;
   padding: 0.68rem 0.95rem;
   border-radius: 999px;
@@ -228,15 +238,15 @@ const { title = "Brabantia Quick Course" } = Astro.props;
       }
 
       .section-title {
-        font-size: clamp(2.2rem, 4vw, 3.4rem);
-        line-height: 1.02;
+        font-size: var(--type-title);
+        line-height: 1.2;
         margin: 0 0 0.85rem;
         letter-spacing: -0.02em;
       }
 
       .section-copy {
         color: var(--muted);
-        font-size: 1.05rem;
+        font-size: var(--type-body);
         line-height: 1.8;
         max-width: 720px;
       }
@@ -249,7 +259,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.14);
         color: var(--text);
-        font-size: 0.88rem;
+        font-size: var(--type-ui);
         font-weight: 700;
         border: 1px solid rgba(255, 255, 255, 0.24);
         backdrop-filter: blur(12px);
@@ -272,7 +282,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         display: inline-block;
         padding: 0.4rem 0.75rem;
         border-radius: 999px;
-        font-size: 0.74rem;
+        font-size: var(--type-label);
         font-weight: 700;
         letter-spacing: 0.05em;
         background: #fff;
@@ -314,6 +324,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .range-tag-card {
         padding: 0.9rem 1rem;
+        font-size: var(--type-body);
         background: rgba(255, 255, 255, 0.32);
         border: 1px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(12px);
@@ -321,7 +332,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .editorial-kicker {
         display: inline-block;
-        font-size: 0.82rem;
+        font-size: var(--type-label);
         font-weight: 700;
         letter-spacing: 0.1em;
         text-transform: uppercase;
@@ -348,20 +359,21 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .category-title {
         margin: 0 0 0.75rem;
-        font-size: 1.45rem;
-        line-height: 1.2;
+        font-size: var(--type-title);
+        line-height: 1.3;
       }
 
       .category-copy {
         margin: 0;
         color: var(--muted);
+        font-size: var(--type-body);
         line-height: 1.75;
       }
 
       .category-link {
         margin-top: 1.5rem;
         font-weight: 700;
-        font-size: 0.95rem;
+        font-size: var(--type-ui);
         color: var(--text);
       }
 
@@ -374,7 +386,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
   border-radius: 999px;
   background: var(--text);
   color: #ffffff;
-  font-size: 0.88rem;
+  font-size: var(--type-ui);
   font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -424,12 +436,13 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .product-title {
         margin: 0;
-        font-size: 1.15rem;
-        line-height: 1.35;
+        font-size: var(--type-product);
+        line-height: var(--leading-product);
       }
 
       .product-description {
         color: var(--muted);
+        font-size: var(--type-body);
         line-height: 1.75;
         margin: 0.85rem 0 1.1rem;
       }
@@ -440,6 +453,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         color: white;
         padding: 0.85rem 1rem;
         border-radius: 999px;
+        font-size: var(--type-ui);
         font-weight: 700;
         cursor: pointer;
         transition: all 0.25s ease;
@@ -477,18 +491,28 @@ const { title = "Brabantia Quick Course" } = Astro.props;
       .product-list {
         padding-left: 1.2rem;
         color: var(--muted);
+        font-size: var(--type-body);
         line-height: 1.85;
+        margin: 0;
+      }
+
+      .product-benefits-list {
+        margin-top: 0;
       }
 
       .tip-box {
         padding: 1rem;
         border-radius: 18px;
         background: rgba(27, 31, 34, 0.06);
-        margin-top: 1rem;
+        margin-top: 1.25rem;
       }
 
       .recommend-box {
-        margin-top: 1rem;
+        margin-top: 1.25rem;
+      }
+
+      .product-recommend-list {
+        margin-top: 0.75rem;
       }
 
       .scenario-option {
@@ -498,17 +522,12 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         border: 1px solid var(--line);
         background: #fff;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: var(--type-body);
         transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
       }
 
       .scenario-option:hover {
         transform: translateY(-1px);
-      }
-
-      .activity-shell {
-        max-width: 860px;
-        margin: 0 auto;
       }
 
       .hero-section {
@@ -568,31 +587,23 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         margin-top: 1rem;
         max-width: 700px;
         color: #ffffff;
+        font-size: var(--type-hero);
+        line-height: 1.15;
       }
 
       .hero-main-subtitle {
         max-width: 620px;
         color: rgba(255, 255, 255, 0.88);
-        font-size: 1.08rem;
+        font-size: var(--type-body);
         line-height: 1.85;
       }
 
       .hero-main-points {
         padding-left: 1.2rem;
         color: rgba(255, 255, 255, 0.88);
+        font-size: var(--type-body);
         line-height: 2;
         margin-top: 1.2rem;
-      }
-
-      .hero-cta {
-        display: inline-block;
-        margin-top: 1.5rem;
-        text-decoration: none;
-        padding: 1rem 1.3rem;
-        border-radius: 999px;
-        background: var(--text);
-        color: #ffffff;
-        font-weight: 700;
       }
 
       .hero-logo-panel {
@@ -659,15 +670,46 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .hero-product-title {
         margin: 0 0 0.8rem;
-        font-size: 2rem;
-        line-height: 1.08;
+        font-size: var(--type-product);
+        line-height: var(--leading-product);
       }
 
       .hero-product-description {
         margin: 0 0 1rem;
         color: var(--muted);
+        font-size: var(--type-body);
         line-height: 1.8;
         max-width: 560px;
+      }
+
+      .selling-step-title {
+        margin: 0;
+        font-size: var(--type-title);
+        line-height: 1.3;
+        font-weight: 700;
+        color: rgb(15 23 42);
+      }
+
+      .completion-label {
+        font-size: var(--type-label);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: rgb(100 116 139);
+      }
+
+      .completion-title {
+        margin: 1rem 0 0;
+        font-size: var(--type-title);
+        line-height: 1.25;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: rgb(15 23 42);
+      }
+
+      .completion-link {
+        font-size: var(--type-ui);
+        font-weight: 700;
       }
 
       .reveal {
@@ -712,10 +754,6 @@ const { title = "Brabantia Quick Course" } = Astro.props;
           padding: 4.5rem 0;
         }
 
-        .section-title {
-          font-size: clamp(2rem, 8vw, 2.8rem);
-        }
-
         .hero-logo-panel {
           justify-self: stretch;
           max-width: none;
@@ -724,10 +762,6 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
         .hero-product-image-wrap {
           min-height: 300px;
-        }
-
-        .hero-product-title {
-          font-size: 1.7rem;
         }
 
         .hero-overlay {
