@@ -1,7 +1,19 @@
 ---
 import "../styles/global.css";
 
-const { title = "Brabantia Quick Course" } = Astro.props;
+interface Props {
+  title?: string;
+  pdfMode?: boolean;
+  showPageDecor?: boolean;
+  showBackToTop?: boolean;
+}
+
+const {
+  title = "PayJustNow Quick Course",
+  pdfMode = false,
+  showPageDecor = !pdfMode,
+  showBackToTop = !pdfMode,
+} = Astro.props as Props;
 ---
 
 <!doctype html>
@@ -13,32 +25,36 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
     <style is:global>
       :root {
-        --bg: #f6f8f9;
-        --surface: rgba(255, 255, 255, 0.78);
+        --bg: #f6f1e8;
+        --surface: rgba(255, 255, 255, 0.9);
         --surface-strong: #ffffff;
-        --text: #1b1f22;
-        --muted: #5f6b73;
-        --line: rgba(0, 0, 0, 0.06);
+        --surface-soft: #fbf7ef;
+        --text: #121416;
+        --muted: #5d625d;
+        --line: rgba(18, 20, 22, 0.12);
 
-        --turquoise: #4f7f8b;
-        --slate-blue: #678b9b;
-        --glacier: #b0c8d1;
-        --ice-blue: #d6e8f3;
-        --platinum: #dadede;
+        --charcoal: #343b42;
+        --charcoal-strong: #2a3137;
+        --nav-pill: #555d66;
+        --lime: #d6ff00;
+        --lime-soft: rgba(214, 255, 0, 0.14);
+        --accent: #121416;
+        --accent-soft: rgba(18, 20, 22, 0.08);
 
-        --accent: #0f172a;
-        --accent-soft: rgba(15, 23, 42, 0.08);
-
-        --shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
-        --radius: 28px;
+        --shadow: 0 22px 44px rgba(18, 20, 22, 0.08);
+        --shadow-soft: 0 14px 30px rgba(18, 20, 22, 0.06);
+        --radius: 30px;
         --max: 1200px;
 
-        --type-hero: 36px;
-        --type-title: 24px;
-        --type-product: 24px;
-        --leading-product: 35px;
-        --type-body: 18px;
-        --type-ui: 14px;
+        --font-body: "Segoe UI Variable", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        --font-display: "Arial Black", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+        --type-hero: clamp(3rem, 7vw, 5.5rem);
+        --type-title: clamp(2rem, 4vw, 3rem);
+        --type-product: 1.6rem;
+        --leading-product: 1.25;
+        --type-body: clamp(1rem, 1.2vw, 1.125rem);
+        --type-ui: 0.92rem;
         --type-label: 12px;
       }
 
@@ -52,16 +68,20 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       body {
         margin: 0;
-        font-family: "Arial Nova", Arial, Helvetica, sans-serif;
+        font-family: var(--font-body);
         font-size: var(--type-body);
-        line-height: 1.7;
+        line-height: 1.75;
         color: var(--text);
         position: relative;
         overflow-x: hidden;
         background:
-          radial-gradient(circle at top right, rgba(79, 127, 139, 0.15), transparent 40%),
-          radial-gradient(circle at bottom left, rgba(176, 200, 209, 0.2), transparent 45%),
-          linear-gradient(to bottom, #ffffff, var(--bg));
+          radial-gradient(circle at top right, rgba(214, 255, 0, 0.16), transparent 34%),
+          radial-gradient(circle at left center, rgba(255, 255, 255, 0.7), transparent 38%),
+          linear-gradient(to bottom, #fdf9f1, var(--bg));
+      }
+
+      body.pdf-layout {
+        background: #ffffff;
       }
 
       button,
@@ -77,137 +97,162 @@ const { title = "Brabantia Quick Course" } = Astro.props;
       }
 
       .course-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  backdrop-filter: blur(14px);
-  background: rgba(252, 250, 247, 0.78);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        padding-top: 0.75rem;
+      }
 
-.course-nav-inner {
-  min-height: 72px;
-  display: grid;
-  grid-template-columns: auto auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  position: relative;
-}
+      .course-nav-inner {
+        min-height: 76px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+        padding: 0.75rem 1rem;
+        border-radius: 999px;
+        background: rgba(52, 59, 66, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 20px 38px rgba(18, 20, 22, 0.14);
+      }
 
-.course-nav-brand {
-  text-decoration: none;
-  color: var(--text);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  font-size: var(--type-ui);
-  max-width: 100%;
-}
+      .course-nav-brand {
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        font-size: 1.2rem;
+        max-width: 100%;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.85rem;
+        min-width: 0;
+      }
 
-.course-nav-toggle {
-  display: none;
-  width: 48px;
-  height: 48px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.24);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  padding: 0;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 5px;
-}
+      .course-nav-mark {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.95rem;
+        background: var(--lime);
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        box-shadow: inset 0 0 0 1px rgba(18, 20, 22, 0.08);
+      }
 
-.course-nav-toggle span {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background: var(--text);
-  border-radius: 999px;
-}
+      .course-nav-mark-image {
+        width: 1.8rem;
+        height: 1.8rem;
+        object-fit: contain;
+        display: block;
+      }
 
-.course-nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  align-items: center;
-  justify-content: flex-end;
-}
+      .course-nav-brand-text {
+        white-space: nowrap;
+      }
 
-.course-nav-links a {
-  text-decoration: none;
-  color: var(--text);
-  font-size: var(--type-ui);
-  font-weight: 700;
-  padding: 0.68rem 0.95rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(10px);
-  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
-}
+      .course-nav-toggle {
+        display: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.06);
+        cursor: pointer;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+      }
 
-.course-nav-links a:hover {
-  background: rgba(0, 0, 0, 0.06);
-  border-color: rgba(0, 0, 0, 0.08);
-  color: var(--text);
-  transform: translateY(-1px);
-}
+      .course-nav-toggle span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: #ffffff;
+        border-radius: 999px;
+      }
 
-.course-nav-links a.active {
-  background: var(--text);
-  color: #ffffff;
-  border-color: var(--text);
-}
+      .course-nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        align-items: center;
+        justify-content: flex-end;
+      }
 
-@media (max-width: 900px) {
-  .course-nav-inner {
-    grid-template-columns: 1fr auto;
-    min-height: 72px;
-    padding: 0.75rem 0;
-  }
+      .course-nav-links a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.92);
+        font-size: var(--type-ui);
+        font-weight: 700;
+        padding: 0.8rem 1rem;
+        border-radius: 999px;
+        background: transparent;
+        border: 1px solid transparent;
+        transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+      }
 
-  .course-nav-toggle {
-    display: inline-flex;
-  }
+      .course-nav-links a:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
 
-  .course-nav-links {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
-    left: 0;
-    display: none;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.6rem;
-    padding: 1rem;
-    border-radius: 22px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-    backdrop-filter: blur(14px);
-  }
+      .course-nav-links a.active {
+        background: var(--nav-pill);
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.06);
+      }
 
-  .course-nav-links.open {
-    display: flex;
-  }
+      @media (max-width: 900px) {
+        .course-nav-inner {
+          grid-template-columns: minmax(0, 1fr) auto;
+          min-height: 72px;
+          padding: 0.75rem 0.9rem;
+          border-radius: 2rem;
+        }
 
-  .course-nav-links a {
-    width: 100%;
-    text-align: left;
-    justify-content: flex-start;
-  }
-}
+        .course-nav-toggle {
+          display: inline-flex;
+        }
+
+        .course-nav-links {
+          position: absolute;
+          top: calc(100% + 0.6rem);
+          right: 0;
+          left: 0;
+          display: none;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0.5rem;
+          padding: 0.9rem;
+          border-radius: 1.5rem;
+          background: rgba(52, 59, 66, 0.98);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 18px 32px rgba(18, 20, 22, 0.18);
+        }
+
+        .course-nav-links.open {
+          display: flex;
+        }
+
+        .course-nav-links a {
+          width: 100%;
+          text-align: left;
+          justify-content: flex-start;
+        }
+      }
 
       .section {
-        padding: 5.5rem 0;
+        padding: 5.75rem 0;
         position: relative;
       }
 
       .section:nth-of-type(even) {
-        background: rgba(214, 232, 243, 0.18);
+        background: rgba(255, 255, 255, 0.26);
       }
 
       .section::after {
@@ -217,13 +262,13 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         left: 5%;
         width: 90%;
         height: 1px;
-        background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.08), transparent);
+        background: linear-gradient(to right, transparent, rgba(18, 20, 22, 0.08), transparent);
       }
 
       .card {
-        background: rgba(255, 255, 255, 0.72);
-        backdrop-filter: blur(14px);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        background: var(--surface-strong);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--line);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
       }
@@ -238,10 +283,12 @@ const { title = "Brabantia Quick Course" } = Astro.props;
       }
 
       .section-title {
+        font-family: var(--font-display);
         font-size: var(--type-title);
-        line-height: 1.2;
+        line-height: 1.06;
         margin: 0 0 0.85rem;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
+        text-wrap: balance;
       }
 
       .section-copy {
@@ -257,19 +304,19 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         gap: 0.5rem;
         padding: 0.7rem 1rem;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.14);
-        color: var(--text);
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
         font-size: var(--type-ui);
         font-weight: 700;
-        border: 1px solid rgba(255, 255, 255, 0.24);
+        border: 1px solid rgba(255, 255, 255, 0.14);
         backdrop-filter: blur(12px);
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 10px 24px rgba(18, 20, 22, 0.12);
       }
 
       .hero-pill {
         color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.08);
       }
 
       .product-pill {
@@ -312,8 +359,8 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .divider {
         width: 110px;
-        height: 2px;
-        background: var(--accent);
+        height: 3px;
+        background: var(--lime);
         border-radius: 999px;
         margin-top: 1.1rem;
       }
@@ -334,7 +381,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         display: inline-block;
         font-size: var(--type-label);
         font-weight: 700;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
         color: var(--muted);
         margin-bottom: 0.9rem;
@@ -416,6 +463,8 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         max-width: 220px;
         max-height: 220px;
         object-fit: contain;
+        display: block;
+        filter: drop-shadow(0 14px 24px rgba(15, 23, 42, 0.14));
       }
 
       .product-content {
@@ -530,102 +579,237 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         transform: translateY(-1px);
       }
 
+      .scenario-option:focus-visible {
+        outline: 3px solid rgba(214, 255, 0, 0.55);
+        outline-offset: 2px;
+      }
+
+      .payment-plans-intro {
+        max-width: 50rem;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .payment-plans-intro-copy {
+        margin: 0;
+        color: var(--muted);
+        font-size: var(--type-body);
+        line-height: 1.8;
+      }
+
+      .scenario-card-embedded {
+        padding: clamp(1.35rem, 3vw, 2rem);
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(18, 20, 22, 0.1);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .scenario-card-embedded > .grid:first-child {
+        display: none;
+      }
+
+      .scenario-card-embedded > .mt-8 {
+        margin-top: 0;
+      }
+
+      .scenario-card-embedded .scenario-question {
+        display: block;
+      }
+
+      .scenario-question-card {
+        background: #ffffff;
+        border: 1px solid rgba(18, 20, 22, 0.08);
+        box-shadow: none;
+      }
+
+      .scenario-question-text {
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(1.2rem, 2.1vw, 1.55rem);
+        line-height: 1.45;
+        font-weight: 800;
+        white-space: pre-line;
+      }
+
+      .scenario-option-embedded {
+        align-items: flex-start;
+        padding: 1rem 1.1rem;
+        min-height: 44px;
+        box-shadow: none;
+      }
+
+      .scenario-option-badge {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(18, 20, 22, 0.14);
+        background: rgba(18, 20, 22, 0.03);
+        font-size: 0.95rem;
+        line-height: 1;
+        margin-top: 0.05rem;
+      }
+
+      .scenario-option-embedded[data-selected="true"] .scenario-option-badge {
+        border-color: rgba(18, 20, 22, 0.24);
+      }
+
+      .scenario-option-embedded[data-state="correct"] .scenario-option-badge {
+        background: rgba(214, 255, 0, 0.28);
+        border-color: rgba(132, 204, 22, 0.4);
+      }
+
+      .scenario-option-embedded[data-state="incorrect"] .scenario-option-badge {
+        background: rgba(18, 20, 22, 0.06);
+        border-color: rgba(18, 20, 22, 0.14);
+      }
+
+      .scenario-feedback-panel {
+        margin-top: 1rem;
+        border: 1px solid rgba(18, 20, 22, 0.08);
+        box-shadow: none;
+      }
+
+      .scenario-feedback-panel[hidden] {
+        display: none !important;
+      }
+
       .hero-section {
         position: relative;
-        overflow: hidden;
+        overflow: visible;
+      }
+
+      .hero-section::after {
+        display: none;
       }
 
       .hero-section-main {
-        padding-top: 7rem;
-        padding-bottom: 6rem;
+        padding-top: clamp(1.25rem, 2.5vw, 1.9rem);
+        padding-bottom: clamp(3.5rem, 5vw, 4.75rem);
+      }
+
+      .hero-shell {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        border-radius: clamp(2rem, 3vw, 2.8rem);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 28px 52px rgba(18, 20, 22, 0.18);
       }
 
       .hero-bg {
         position: absolute;
         inset: 0;
-        background: url("/images/hero-kitchen.jpg") center / cover no-repeat;
+        background:
+          radial-gradient(circle at 18% 18%, rgba(214, 255, 0, 0.14), transparent 0 24%),
+          radial-gradient(circle at 82% 24%, rgba(255, 255, 255, 0.08), transparent 0 22%),
+          linear-gradient(135deg, #687174 0%, #485159 45%, #31383f 100%);
       }
 
       .hero-overlay {
         position: absolute;
         inset: 0;
         background:
-          radial-gradient(circle at 15% 40%, rgba(0, 0, 0, 0.35), transparent 50%),
-          linear-gradient(
-            to right,
-            rgba(10, 10, 10, 0.85) 0%,
-            rgba(10, 10, 10, 0.7) 30%,
-            rgba(10, 10, 10, 0.45) 55%,
-            rgba(10, 10, 10, 0.2) 75%,
-            rgba(10, 10, 10, 0.05) 100%
-          ),
+          radial-gradient(circle at 12% 44%, rgba(255, 255, 255, 0.1), transparent 0 38%),
           linear-gradient(
             to bottom,
-            rgba(79, 127, 139, 0.12),
-            rgba(176, 200, 209, 0.1)
+            rgba(18, 20, 22, 0.06),
+            rgba(18, 20, 22, 0.2)
           );
       }
 
       .hero-inner {
         position: relative;
         z-index: 1;
+        padding: clamp(2rem, 4vw, 3.4rem);
       }
 
       .hero-main-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-        gap: 2rem;
+        grid-template-columns: minmax(0, 1.2fr) minmax(250px, 0.8fr);
+        gap: clamp(1.75rem, 3vw, 3.2rem);
         align-items: center;
       }
 
       .hero-copy {
-        padding-right: 1rem;
+        padding-right: clamp(0rem, 1.5vw, 0.75rem);
         min-width: 0;
       }
 
       .hero-main-title {
-        margin-top: 1rem;
-        max-width: 700px;
+        margin: 0 0 1rem;
+        max-width: 10ch;
         color: #ffffff;
-        font-size: var(--type-hero);
-        line-height: 1.15;
+        font-size: clamp(3rem, 5.2vw, 4.85rem);
+        line-height: 0.98;
       }
 
       .hero-main-subtitle {
+        margin: 0;
         max-width: 620px;
-        color: rgba(255, 255, 255, 0.88);
+        color: rgba(255, 255, 255, 0.9);
         font-size: var(--type-body);
-        line-height: 1.85;
+        line-height: 1.65;
       }
 
       .hero-main-points {
         padding-left: 1.2rem;
-        color: rgba(255, 255, 255, 0.88);
+        color: rgba(255, 255, 255, 0.92);
         font-size: var(--type-body);
-        line-height: 2;
-        margin-top: 1.2rem;
+        line-height: 1.75;
+        margin: 1.15rem 0 0;
+        display: grid;
+        gap: 0.9rem;
+        max-width: 42rem;
+      }
+
+      .hero-main-points li::marker {
+        color: rgba(214, 255, 0, 0.92);
       }
 
       .hero-logo-panel {
         justify-self: end;
-        max-width: 520px;
-        width: 100%;
-        min-height: 420px;
-        height: 100%;
+        width: min(100%, 330px);
+        aspect-ratio: 1 / 1;
         display: grid;
         place-items: center;
-        padding: 2.5rem;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.94), rgba(245, 245, 245, 0.9));
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        box-shadow: 0 24px 55px rgba(0, 0, 0, 0.12);
+        padding: clamp(0.75rem, 2vw, 1.4rem);
+      }
+
+      .hero-logo-frame {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: clamp(1.8rem, 3vw, 2.4rem);
+        background: linear-gradient(160deg, #dbff28 0%, #bdd600 100%);
+        display: grid;
+        place-items: center;
+        padding: clamp(1rem, 2.3vw, 1.5rem);
+        box-shadow:
+          0 24px 52px rgba(18, 20, 22, 0.22),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .hero-logo-core {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: clamp(1.4rem, 2.4vw, 1.9rem);
+        background: linear-gradient(180deg, #ecff4d 0%, #d6ff00 100%);
+        display: grid;
+        place-items: center;
+        padding: clamp(0.9rem, 1.8vw, 1.3rem);
+        box-shadow:
+          inset 0 10px 24px rgba(255, 255, 255, 0.14),
+          0 0 0 1px rgba(18, 20, 22, 0.06);
       }
 
       .hero-logo-image {
-        width: 100%;
-        max-width: 340px;
+        width: 52%;
+        max-width: 160px;
         object-fit: contain;
         display: block;
-        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
+        filter: drop-shadow(0 14px 28px rgba(18, 20, 22, 0.18));
       }
 
       .hero-product-card {
@@ -653,6 +837,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         max-height: 320px;
         object-fit: contain;
         display: block;
+        filter: drop-shadow(0 18px 30px rgba(15, 23, 42, 0.14));
       }
 
       .hero-product-content {
@@ -684,10 +869,11 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       .selling-step-title {
         margin: 0;
-        font-size: var(--type-title);
-        line-height: 1.3;
+        font-family: var(--font-display);
+        font-size: clamp(1.35rem, 2vw, 1.75rem);
+        line-height: 1.1;
         font-weight: 700;
-        color: rgb(15 23 42);
+        color: var(--text);
       }
 
       .completion-label {
@@ -722,6 +908,702 @@ const { title = "Brabantia Quick Course" } = Astro.props;
       .delay-2 { animation-delay: 0.2s; }
       .delay-3 { animation-delay: 0.3s; }
 
+      .content-card,
+      .video-card {
+        padding: 1.6rem;
+        min-width: 0;
+      }
+
+      .content-card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.95rem;
+        height: 100%;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .accent-card {
+        background: linear-gradient(180deg, rgba(214, 255, 0, 0.1), rgba(255, 255, 255, 1) 55%);
+      }
+
+      .content-card-kicker {
+        font-size: 0.78rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: var(--muted);
+      }
+
+      .content-card-title,
+      .video-card-header h3 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(1.45rem, 2vw, 2rem);
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+      }
+
+      .content-card-copy {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .content-list {
+        margin: 0;
+        padding-left: 1.25rem;
+        color: var(--muted);
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .content-list li::marker {
+        color: var(--charcoal);
+      }
+
+      .example-card {
+        justify-content: center;
+      }
+
+      .basics-shell {
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .basics-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        align-items: center;
+      }
+
+      .basics-copy {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .basics-title {
+        margin-bottom: 1rem;
+        font-size: clamp(2.1rem, 3.5vw, 3rem);
+        line-height: 1.02;
+        color: var(--text);
+      }
+
+      .basics-intro {
+        max-width: 52rem;
+        margin: 0;
+        color: var(--text);
+        line-height: 1.8;
+      }
+
+      .basics-divider {
+        width: clamp(5rem, 10vw, 7.5rem);
+        height: 3px;
+        margin-top: 1.4rem;
+        border-radius: 999px;
+        background: var(--lime);
+        box-shadow: 0 0 16px rgba(214, 255, 0, 0.35);
+      }
+
+      .basics-tip {
+        width: min(100%, 760px);
+        margin-top: 1.5rem;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 1rem;
+        padding: 1.15rem 1.3rem;
+        border-radius: 999px;
+        background: var(--charcoal);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 16px 32px rgba(18, 20, 22, 0.14);
+      }
+
+      .basics-tip-icon {
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        color: var(--lime);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.03);
+        flex-shrink: 0;
+      }
+
+      .basics-tip-text {
+        margin: 0;
+        min-width: 0;
+        color: rgba(255, 255, 255, 0.96);
+        line-height: 1.6;
+        text-align: left;
+      }
+
+      .basics-tip-text em {
+        font-style: italic;
+      }
+
+      .tip-callout {
+        background: var(--charcoal);
+        border-color: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 1rem;
+        align-items: start;
+        padding: 1.25rem 1.4rem;
+      }
+
+      .tip-callout-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        color: var(--lime);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        flex-shrink: 0;
+      }
+
+      .tip-callout-copy {
+        min-width: 0;
+      }
+
+      .tip-callout-label {
+        display: inline-block;
+        margin-bottom: 0.35rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.8rem;
+        font-weight: 800;
+      }
+
+      .tip-callout-copy p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .video-card {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .video-card-laptop {
+        padding: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .video-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+      }
+
+      .video-frame {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: calc(var(--radius) - 10px);
+        background: #111111;
+        border: 1px solid var(--line);
+      }
+
+      .video-frame iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 16 / 9;
+        display: block;
+        border: 0;
+      }
+
+      .laptop-shell {
+        width: min(100%, 920px);
+        margin: 0 auto;
+      }
+
+      .laptop-screen {
+        border-radius: 1.75rem;
+        background: linear-gradient(180deg, #3b434b 0%, #20262b 100%);
+        padding: clamp(0.7rem, 1.8vw, 1rem);
+        box-shadow:
+          0 24px 48px rgba(18, 20, 22, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .video-frame-laptop {
+        border-radius: 1.15rem;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .laptop-base {
+        width: min(100%, 96%);
+        height: clamp(0.7rem, 1.6vw, 1rem);
+        margin: 0 auto;
+        border-radius: 0 0 999px 999px;
+        background: linear-gradient(180deg, #c8ccd1 0%, #8b9198 100%);
+        box-shadow: 0 12px 24px rgba(18, 20, 22, 0.14);
+      }
+
+      .how-it-works-header,
+      .how-it-works-media {
+        max-width: 52rem;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .how-it-works-transition {
+        margin: 0 auto 1.2rem;
+        max-width: 42rem;
+        color: var(--muted);
+        font-size: var(--type-body);
+        line-height: 1.8;
+        text-wrap: balance;
+      }
+
+      .how-it-works-title {
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        margin-bottom: 1rem;
+      }
+
+      .how-it-works-requirement {
+        max-width: 48rem;
+        margin: 0 auto;
+        color: var(--muted);
+        line-height: 1.85;
+      }
+
+      .how-it-works-media {
+        margin-top: 2rem;
+        max-width: 68rem;
+      }
+
+      .how-it-works-video-intro {
+        margin: 0 0 1rem;
+        color: var(--text);
+        font-weight: 700;
+        line-height: 1.6;
+      }
+
+      .how-it-works-laptop {
+        width: 100%;
+      }
+
+      .how-it-works-process-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.4rem;
+        margin: 2rem auto 0;
+      }
+
+      .how-it-works-process-card {
+        padding: clamp(1.35rem, 2.4vw, 1.8rem);
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(18, 20, 22, 0.1);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .how-it-works-process-top {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+      }
+
+      .how-it-works-process-accent {
+        width: 0.85rem;
+        height: 0.85rem;
+        border-radius: 999px;
+        background: var(--lime);
+        box-shadow: 0 0 16px rgba(214, 255, 0, 0.45);
+        flex-shrink: 0;
+      }
+
+      .how-it-works-process-title {
+        margin: 0;
+        color: var(--text);
+        font-family: var(--font-display);
+        font-size: clamp(1.2rem, 2vw, 1.45rem);
+        line-height: 1.15;
+      }
+
+      .how-it-works-process-copy {
+        margin: 0.95rem 0 0;
+        color: var(--muted);
+        font-size: var(--type-body);
+        line-height: 1.8;
+      }
+
+      .how-it-works-tip-wrap {
+        margin-top: 1.6rem;
+      }
+
+      .how-it-works-tip {
+        width: min(100%, 860px);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 1rem;
+        padding: 1.15rem 1.3rem;
+        border-radius: 999px;
+        background: var(--charcoal);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 16px 32px rgba(18, 20, 22, 0.14);
+      }
+
+      .how-it-works-tip-icon {
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        color: var(--lime);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.03);
+        flex-shrink: 0;
+      }
+
+      .how-it-works-tip-text {
+        margin: 0;
+        min-width: 0;
+        color: rgba(255, 255, 255, 0.96);
+        line-height: 1.6;
+        text-align: left;
+      }
+
+      .how-it-works-tip-text em {
+        font-style: italic;
+      }
+
+      .payment-example-flow {
+        max-width: 52rem;
+        margin: 0 auto;
+      }
+
+      .payment-example-card {
+        padding: clamp(1.6rem, 3vw, 2.35rem);
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(18, 20, 22, 0.1);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .payment-example-title {
+        margin: 0;
+        color: var(--text);
+        font-family: var(--font-display);
+        font-size: clamp(1.7rem, 3vw, 2.3rem);
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+      }
+
+      .payment-example-copy {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1.25rem;
+      }
+
+      .payment-example-copy p {
+        margin: 0;
+        color: var(--muted);
+        font-size: var(--type-body);
+        line-height: 1.8;
+      }
+
+      .payment-example-prompt {
+        margin: 1.35rem 0 0;
+        color: var(--text);
+        font-size: 1rem;
+        line-height: 1.6;
+        font-weight: 700;
+      }
+
+      .payment-example-question {
+        margin-top: 1rem;
+      }
+
+      .interactive-section-shell {
+        width: 100%;
+      }
+
+      .interactive-section-header {
+        max-width: 42rem;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .interactive-section-title {
+        margin-bottom: 0;
+        font-size: clamp(1.9rem, 3.4vw, 2.75rem);
+      }
+
+      .interactive-section-question {
+        margin-top: 1.5rem;
+      }
+
+      .key-considerations-shell {
+        width: 100%;
+      }
+
+      .key-considerations-header {
+        max-width: 42rem;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .key-considerations-title {
+        margin-bottom: 0;
+        font-size: clamp(1.9rem, 3.4vw, 2.75rem);
+      }
+
+      .key-considerations-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.4rem;
+        margin-top: 1.5rem;
+      }
+
+      .key-considerations-card {
+        padding: clamp(1.35rem, 2.4vw, 1.8rem);
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(18, 20, 22, 0.1);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .key-considerations-accent {
+        display: inline-flex;
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 999px;
+        background: var(--lime);
+        box-shadow: 0 0 16px rgba(214, 255, 0, 0.45);
+      }
+
+      .key-considerations-copy {
+        margin: 0.9rem 0 0;
+        color: var(--muted);
+        font-size: var(--type-body);
+        line-height: 1.8;
+      }
+
+      .key-considerations-tip-wrap {
+        margin-top: 1.6rem;
+      }
+
+      .key-considerations-tip {
+        width: min(100%, 860px);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 1rem;
+        padding: 1.15rem 1.3rem;
+        border-radius: 999px;
+        background: var(--charcoal);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 16px 32px rgba(18, 20, 22, 0.14);
+      }
+
+      .key-considerations-tip-icon {
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        color: var(--lime);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.03);
+        flex-shrink: 0;
+      }
+
+      .key-considerations-tip-text {
+        margin: 0;
+        min-width: 0;
+        color: rgba(255, 255, 255, 0.96);
+        line-height: 1.6;
+        text-align: left;
+      }
+
+      .key-considerations-tip-text em {
+        font-style: italic;
+      }
+
+      .key-considerations-question {
+        margin-top: 1.5rem;
+      }
+
+      .steps-grid {
+        display: grid;
+        gap: 1.4rem;
+      }
+
+      .steps-grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .steps-grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .step-card {
+        box-shadow: var(--shadow-soft);
+      }
+
+      .step-number {
+        display: flex;
+        height: 3rem;
+        width: 3rem;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        border: 1px solid rgba(18, 20, 22, 0.08);
+        background: var(--surface-soft);
+        color: var(--text);
+        font-size: 0.85rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+      }
+
+      .wrap-card {
+        justify-content: center;
+      }
+
+      .wrap-lead {
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 2vw, 2rem);
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        color: var(--text);
+      }
+
+      .recap-list {
+        grid-template-columns: 1fr;
+      }
+
+      .wrap-up-shell {
+        overflow: hidden;
+        padding: clamp(1.5rem, 3vw, 2.4rem);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 242, 233, 0.92));
+        border: 1px solid rgba(18, 20, 22, 0.1);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .wrap-up-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 0.92fr);
+        gap: clamp(1.4rem, 3vw, 2.4rem);
+        align-items: center;
+      }
+
+      .wrap-up-copy {
+        min-width: 0;
+      }
+
+      .wrap-up-title {
+        margin-bottom: 0.95rem;
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+
+      .wrap-up-supporting {
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+        line-height: 1.6;
+        font-weight: 700;
+      }
+
+      .wrap-up-body {
+        margin: 1rem 0 0;
+        max-width: 42rem;
+        color: var(--muted);
+        font-size: var(--type-body);
+        line-height: 1.85;
+      }
+
+      .wrap-up-media {
+        min-width: 0;
+      }
+
+      .wrap-up-image {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: calc(var(--radius) - 8px);
+        box-shadow: 0 18px 36px rgba(18, 20, 22, 0.1);
+      }
+
+      .course-footer {
+        padding: 0 0 4.5rem;
+      }
+
+      .course-footer-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 1rem 1.5rem;
+        padding: 1rem 1.2rem 1rem 2rem;
+        border-radius: 999px;
+        background: rgba(52, 59, 66, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 20px 38px rgba(18, 20, 22, 0.14);
+      }
+
+      .course-footer-message {
+        margin: 0;
+        color: #ffffff;
+        font-size: clamp(1rem, 1.6vw, 1.15rem);
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .course-footer-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        min-height: 44px;
+        padding: 0.85rem 1.35rem;
+        border-radius: 999px;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: var(--type-body);
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+      }
+
+      .course-footer-link:hover {
+        background: rgba(255, 255, 255, 0.22);
+        transform: translateY(-1px);
+      }
+
+      .course-footer-link:focus-visible {
+        outline: 3px solid rgba(214, 255, 0, 0.55);
+        outline-offset: 2px;
+      }
+
+      .course-footer-link-icon {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+      }
+
       @keyframes rise {
         to {
           opacity: 1;
@@ -731,22 +1613,22 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
       @media (max-width: 900px) {
         .course-nav-inner {
-          align-items: flex-start;
-          padding: 0.8rem 0;
-          flex-direction: column;
+          align-items: center;
         }
 
         .course-nav-links {
-          width: 100%;
-          overflow-x: auto;
-          flex-wrap: nowrap;
-          padding-bottom: 0.2rem;
+          width: auto;
+          overflow-x: visible;
+          flex-wrap: wrap;
+          padding-bottom: 0;
         }
 
         .grid-3,
         .grid-2,
-        .hero-main-grid,
-        .hero-product-grid {
+        .steps-grid-2,
+        .steps-grid-3,
+        .hero-product-grid,
+        .wrap-up-grid {
           grid-template-columns: 1fr;
         }
 
@@ -757,7 +1639,8 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         .hero-logo-panel {
           justify-self: stretch;
           max-width: none;
-          min-height: 300px;
+          aspect-ratio: auto;
+          padding: 0.5rem 0 0;
         }
 
         .hero-product-image-wrap {
@@ -766,18 +1649,46 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
         .hero-overlay {
           background:
-            radial-gradient(circle at 15% 25%, rgba(0, 0, 0, 0.28), transparent 50%),
+            radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.1), transparent 50%),
             linear-gradient(
               to bottom,
-              rgba(10, 10, 10, 0.82) 0%,
-              rgba(10, 10, 10, 0.58) 45%,
-              rgba(10, 10, 10, 0.34) 100%
-            ),
-            linear-gradient(
-              to bottom,
-              rgba(79, 127, 139, 0.12),
-              rgba(176, 200, 209, 0.1)
-            );
+              rgba(18, 20, 22, 0.08) 0%,
+            rgba(18, 20, 22, 0.24) 100%
+          );
+        }
+
+        .hero-inner {
+          padding: clamp(1.6rem, 4vw, 2.4rem);
+        }
+
+        .tip-callout {
+          grid-template-columns: 1fr;
+        }
+
+        .basics-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .how-it-works-tip {
+          width: 100%;
+        }
+
+        .key-considerations-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .key-considerations-tip {
+          width: 100%;
+        }
+
+        .course-footer-shell {
+          grid-template-columns: 1fr;
+          padding: 1.15rem;
+          border-radius: 2rem;
+        }
+
+        .course-footer-link {
+          width: 100%;
         }
       }
 
@@ -786,10 +1697,416 @@ const { title = "Brabantia Quick Course" } = Astro.props;
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
+
+      @media (min-width: 769px) and (max-width: 900px) {
+        .hero-main-grid {
+          grid-template-columns: minmax(0, 1fr) minmax(220px, 0.72fr);
+          gap: 1.5rem;
+        }
+
+        .hero-main-title {
+          font-size: clamp(2.75rem, 6vw, 3.7rem);
+        }
+
+        .hero-logo-panel {
+          justify-self: end;
+          width: min(100%, 250px);
+          padding: 0;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .hero-section-main {
+          padding-top: 1rem;
+          padding-bottom: 3.25rem;
+        }
+
+        .hero-main-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .hero-main-title {
+          max-width: none;
+          font-size: clamp(2.5rem, 11vw, 3.5rem);
+        }
+
+        .hero-main-subtitle,
+        .hero-main-points {
+          max-width: none;
+        }
+
+        .hero-logo-panel {
+          justify-self: center;
+          width: min(100%, 240px);
+        }
+
+        .basics-shell {
+          padding: 1.5rem;
+        }
+
+        .basics-title {
+          font-size: clamp(1.9rem, 9vw, 2.5rem);
+        }
+
+        .basics-tip {
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 0.85rem;
+          padding: 1rem 1.05rem;
+          border-radius: 1.8rem;
+        }
+
+        .basics-tip-icon {
+          width: 3rem;
+          height: 3rem;
+          align-self: start;
+        }
+
+        .how-it-works-header {
+          max-width: none;
+        }
+
+        .how-it-works-title {
+          font-size: clamp(1.9rem, 9vw, 2.5rem);
+        }
+
+        .how-it-works-media,
+        .how-it-works-laptop {
+          max-width: none;
+        }
+
+        .laptop-screen {
+          border-radius: 1.2rem;
+          padding: 0.65rem;
+        }
+
+        .video-frame-laptop {
+          border-radius: 0.8rem;
+        }
+
+        .how-it-works-process-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .how-it-works-process-card {
+          padding: 1.2rem;
+        }
+
+        .how-it-works-tip {
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 0.85rem;
+          padding: 1rem 1.05rem;
+          border-radius: 1.8rem;
+        }
+
+        .how-it-works-tip-icon {
+          width: 3rem;
+          height: 3rem;
+          align-self: start;
+        }
+
+        .payment-example-card {
+          padding: 1.35rem;
+        }
+
+        .payment-example-title {
+          font-size: clamp(1.55rem, 8vw, 2rem);
+        }
+
+        .payment-example-copy {
+          margin-top: 1rem;
+          gap: 0.9rem;
+        }
+
+        .payment-example-prompt {
+          margin-top: 1.15rem;
+        }
+
+        .interactive-section-title {
+          font-size: clamp(1.75rem, 8vw, 2.2rem);
+        }
+
+        .interactive-section-question {
+          margin-top: 1.2rem;
+        }
+
+        .key-considerations-title {
+          font-size: clamp(1.75rem, 8vw, 2.2rem);
+        }
+
+        .key-considerations-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .key-considerations-card {
+          padding: 1.2rem;
+        }
+
+        .key-considerations-tip {
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 0.85rem;
+          padding: 1rem 1.05rem;
+          border-radius: 1.8rem;
+        }
+
+        .key-considerations-tip-icon {
+          width: 3rem;
+          height: 3rem;
+          align-self: start;
+        }
+
+        .key-considerations-question {
+          margin-top: 1.2rem;
+        }
+
+        .wrap-up-shell {
+          padding: 1.25rem;
+        }
+
+        .wrap-up-copy {
+          text-align: center;
+        }
+
+        .wrap-up-title {
+          font-size: clamp(1.85rem, 9vw, 2.45rem);
+        }
+
+        .wrap-up-body {
+          margin-top: 0.9rem;
+          max-width: none;
+        }
+
+        .course-footer {
+          padding-bottom: 3.25rem;
+        }
+
+        .course-footer-shell {
+          gap: 0.95rem;
+        }
+      }
+
+      .pdf-layout .page-decor,
+      .pdf-layout [data-back-to-top] {
+        display: none !important;
+      }
+
+      .pdf-layout .section {
+        padding: 4rem 0;
+      }
+
+      .pdf-layout .section::after {
+        display: none;
+      }
+
+      .pdf-layout .card,
+      .pdf-layout .range-tag-card,
+      .pdf-layout .hero-product-card,
+      .pdf-layout .product-card {
+        background: #ffffff;
+        backdrop-filter: none;
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+      }
+
+      .pdf-layout .card-hover,
+      .pdf-layout .card-hover:hover,
+      .pdf-layout .reveal {
+        opacity: 1;
+        transform: none;
+        animation: none;
+        transition: none;
+      }
+
+      .pdf-layout .hero-product-image-wrap,
+      .pdf-layout .product-image-wrap {
+        background: linear-gradient(to bottom, #f6f8fb, #ffffff);
+      }
+
+      .pdf-cover {
+        padding: 2.4rem;
+        background:
+          linear-gradient(135deg, rgba(79, 127, 139, 0.1), rgba(255, 255, 255, 0.96) 52%),
+          linear-gradient(to bottom right, rgba(214, 232, 243, 0.28), rgba(255, 255, 255, 1));
+      }
+
+      .pdf-cover-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .pdf-logo-panel {
+        min-height: 260px;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        border-radius: calc(var(--radius) - 6px);
+        background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.98), rgba(239, 244, 247, 0.95));
+        border: 1px solid rgba(79, 127, 139, 0.12);
+      }
+
+      .pdf-logo-panel img {
+        width: 100%;
+        max-width: 260px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .pdf-brand-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .pdf-brand-card {
+        padding: 1rem 1.1rem;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(79, 127, 139, 0.12);
+      }
+
+      .pdf-note {
+        color: var(--muted);
+        font-size: var(--type-ui);
+        margin-top: 1.25rem;
+      }
+
+      .pdf-category-card {
+        padding: 1.4rem;
+        min-height: 100%;
+      }
+
+      .pdf-question-card {
+        padding: 1.5rem;
+      }
+
+      .pdf-question-options {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .pdf-question-option {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        padding: 0.9rem 1rem;
+        border-radius: 18px;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        background: #ffffff;
+      }
+
+      .pdf-question-option.correct {
+        background: rgba(226, 255, 232, 0.78);
+        border-color: rgba(34, 197, 94, 0.25);
+      }
+
+      .pdf-answer-card {
+        margin-top: 1rem;
+        padding: 1rem 1.1rem;
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.04);
+        border: 1px solid rgba(15, 23, 42, 0.07);
+      }
+
+      .pdf-avoid-break {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      @media (max-width: 900px) {
+        .pdf-cover-grid,
+        .pdf-brand-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 14mm 12mm 16mm;
+      }
+
+      @media print {
+        html {
+          background: #ffffff;
+        }
+
+        body.pdf-layout {
+          background: #ffffff !important;
+          color: #111827;
+          font-size: 11pt;
+          line-height: 1.55;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .pdf-layout .container {
+          width: 100%;
+          max-width: none;
+        }
+
+        .pdf-layout .section {
+          padding: 11mm 0;
+        }
+
+        .pdf-layout .grid-3 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 0.9rem;
+        }
+
+        .pdf-layout .grid-2,
+        .pdf-layout .hero-product-grid,
+        .pdf-layout .pdf-cover-grid,
+        .pdf-layout .pdf-brand-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .pdf-layout .hero-product-image-wrap,
+        .pdf-layout .product-image-wrap {
+          min-height: auto;
+          padding: 1.25rem;
+        }
+
+        .pdf-layout .hero-product-content,
+        .pdf-layout .product-content,
+        .pdf-layout .pdf-cover,
+        .pdf-layout .pdf-question-card {
+          padding: 1.2rem;
+        }
+
+        .pdf-layout .card,
+        .pdf-layout .range-tag-card,
+        .pdf-layout .hero-product-card,
+        .pdf-layout .product-card,
+        .pdf-layout .pdf-category-card,
+        .pdf-layout .pdf-question-card,
+        .pdf-layout .tip-box,
+        .pdf-layout .recommend-box,
+        .pdf-layout .pdf-answer-card,
+        .pdf-layout .pdf-logo-panel {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .pdf-layout img {
+          max-width: 100%;
+          height: auto;
+          object-fit: contain;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .pdf-layout button,
+        .pdf-layout [data-course-nav] {
+          display: none !important;
+        }
+      }
     </style>
   </head>
-  <body>
-    <div class="page-decor pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  <body class:list={[pdfMode && "pdf-layout"]}>
+    {showPageDecor && (
+      <div class="page-decor pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div class="absolute left-[-8rem] top-24 h-[24rem] w-[24rem] rounded-full bg-[radial-gradient(circle,rgba(226,232,240,0.5),rgba(226,232,240,0.12)_42%,transparent_72%)] blur-3xl"></div>
       <div class="absolute right-[-10rem] top-[28rem] h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(203,213,225,0.42),rgba(203,213,225,0.08)_46%,transparent_74%)] blur-3xl"></div>
       <div class="absolute bottom-[12rem] left-1/2 h-[26rem] w-[26rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.5),rgba(255,255,255,0.12)_48%,transparent_76%)] blur-3xl"></div>
@@ -797,13 +2114,15 @@ const { title = "Brabantia Quick Course" } = Astro.props;
         class="absolute inset-x-0 top-0 h-[36rem] opacity-[0.06]"
         style={`background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='560' viewBox='0 0 1400 560' fill='none'%3E%3Cpath d='M-80 196C86 110 241 95 415 138c126 31 219 28 333-8 130-41 259-38 397 4 129 39 240 41 415-14' stroke='%2394a3b8' stroke-width='1.5' stroke-opacity='0.55'/%3E%3Cpath d='M-120 318c176-70 336-78 512-22 132 42 247 44 367 3 128-43 248-36 388 4 118 34 227 33 373-14' stroke='%23cbd5e1' stroke-width='1.5' stroke-opacity='0.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center top;background-size:cover;`}
       ></div>
-    </div>
+      </div>
+    )}
 
     <div class="relative z-10">
       <slot />
     </div>
 
-    <button
+    {showBackToTop && (
+      <button
       type="button"
       class="hidden fixed bottom-6 right-6 z-50 rounded-full shadow-lg bg-slate-900 text-white p-3 transition hover:-translate-y-1"
       aria-label="Back to top"
@@ -821,9 +2140,11 @@ const { title = "Brabantia Quick Course" } = Astro.props;
       >
         <path d="m18 15-6-6-6 6" />
       </svg>
-    </button>
+      </button>
+    )}
 
-    <script is:inline>
+    {showBackToTop && (
+      <script is:inline>
       const backToTopButton = document.querySelector("[data-back-to-top]");
 
       if (backToTopButton) {
@@ -839,6 +2160,7 @@ const { title = "Brabantia Quick Course" } = Astro.props;
 
         toggleBackToTop();
       }
-    </script>
+      </script>
+    )}
   </body>
 </html>

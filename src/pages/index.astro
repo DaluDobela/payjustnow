@@ -2,108 +2,255 @@
 import CourseNav from "../components/CourseNav.astro";
 import CourseLayout from "../layouts/CourseLayout.astro";
 import HeroSection from "../components/HeroSection.astro";
-import CategoryCard from "../components/CategoryCard.astro";
-import HeroProduct from "../components/HeroProduct.astro";
-import ProductCard from "../components/ProductCard.astro";
-import SellingSteps from "../components/SellingSteps.astro";
 import ScenarioCard from "../components/ScenarioCard.astro";
-import { courseData } from "../data/brabantia-course";
+import VideoCard from "../components/VideoCard.astro";
+import { courseData } from "../data/payjustnow-course";
 ---
 
-<CourseLayout title={courseData.title}>
-	<div id="top"></div>
-  <CourseNav />
-  <HeroSection
-    title={courseData.title}
-    subtitle={courseData.subtitle}
-    points={courseData.brandPoints}
+<CourseLayout title={courseData.meta.title}>
+  <div id="top"></div>
+
+  <CourseNav
+    brandName={courseData.meta.brand}
+    logoSrc={courseData.meta.logoSrc}
+    sections={courseData.navSections}
   />
 
-  <section
-    class="section scroll-mt-28"
-    id="range-overview"
-    style="background:rgba(255,255,255,0.42);"
-  >
+  <HeroSection
+    id="welcome"
+    title={courseData.welcome.title}
+    subtitle={courseData.welcome.subtitle}
+    points={courseData.welcome.points}
+    logoSrc={courseData.meta.logoSrc}
+    logoAlt={courseData.meta.logoAlt}
+  />
+
+  <section class="section scroll-mt-28" id={courseData.basics.id}>
     <div class="container">
-      <div class="lesson-shell reveal">
-        <span class="editorial-kicker">Lesson 2</span>
-        <h2 class="section-title">Explore the Range</h2>
-        <p class="section-copy">
-          Discover the Brabantia assortment across key lifestyle categories.
-          Start with HERO products, then use NEW products to extend the conversation
-          and build a more aspirational recommendation.
-        </p>
-        <div class="divider"></div>
-      </div>
+      <div class="basics-shell reveal">
+        <div class="basics-grid">
+          <div class="basics-copy">
+            {courseData.basics.eyebrow && (
+              <span class="editorial-kicker">{courseData.basics.eyebrow}</span>
+            )}
+            <h2 class="section-title basics-title">{courseData.basics.title}</h2>
+            <p class="section-copy basics-intro">{courseData.basics.intro}</p>
+            <div class="basics-divider" aria-hidden="true"></div>
 
-      <div class="mt-6 mb-8 flex flex-wrap gap-3 md:mt-8">
-        {courseData.rangeTags.map((tag) => (
-          <div class="card range-tag-card grow sm:grow-0">
-            <strong>{tag.label}:</strong> {tag.meaning}
+            <aside class="basics-tip" aria-label="Tip">
+              <div class="basics-tip-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  class="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 18h6" />
+                  <path d="M10 22h4" />
+                  <path d="M12 2a7 7 0 0 0-4 12.75c.6.42 1 1.09 1 1.82V18h6v-1.43c0-.73.4-1.4 1-1.82A7 7 0 0 0 12 2Z" />
+                </svg>
+              </div>
+
+              <p class="basics-tip-text">
+                <em>{courseData.basics.tip}</em>
+              </p>
+            </aside>
           </div>
-        ))}
-      </div>
-
-      <div class="grid-3 items-stretch">
-        {courseData.categories.map((category) => (
-          <CategoryCard
-            id={category.id}
-            title={category.title}
-            intro={category.intro}
-          />
-        ))}
+        </div>
       </div>
     </div>
   </section>
 
-  {courseData.categories.map((category, categoryIndex) => (
-    <section
-      class="section scroll-mt-28"
-      id={category.id}
-      style={`background:${categoryIndex % 2 === 0 ? "transparent" : "rgba(255,255,255,0.45)"};`}
-    >
-      <div class="container">
-        <div class="lesson-shell reveal">
-          <span class="editorial-kicker">Lesson {categoryIndex + 3}</span>
-          <h2 class="section-title">{category.title}</h2>
-          <p class="section-copy">{category.intro}</p>
-          <div class="divider"></div>
+  <section class="section scroll-mt-28" id={courseData.paymentPlans.id}>
+    <div class="container">
+      <div class="payment-plans-intro reveal">
+        <p class="payment-plans-intro-copy">{courseData.paymentPlans.intro}</p>
+      </div>
+
+      <div class="mt-8">
+        <ScenarioCard
+          id={courseData.paymentPlans.id}
+          embedded={true}
+          showHeader={false}
+          showProgress={false}
+          idleFeedbackMessage=""
+          question={courseData.paymentPlans.question.question}
+          options={courseData.paymentPlans.question.options}
+          correctIndex={courseData.paymentPlans.question.correctIndex}
+          optionFeedback={courseData.paymentPlans.question.optionFeedback}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section scroll-mt-28" id={courseData.howItWorks.id}>
+    <div class="container">
+      <div class="how-it-works-header reveal">
+        <p class="how-it-works-transition">{courseData.howItWorks.transition}</p>
+        <h2 class="section-title how-it-works-title">{courseData.howItWorks.title}</h2>
+        <p class="section-copy how-it-works-requirement">{courseData.howItWorks.requirement}</p>
+      </div>
+
+      <div class="how-it-works-media reveal delay-1">
+        <p class="how-it-works-video-intro">{courseData.howItWorks.videoIntro}</p>
+        <div class="how-it-works-laptop">
+          <VideoCard
+            title={courseData.howItWorks.video.title}
+            embedUrl={courseData.howItWorks.video.embedUrl}
+            frame="laptop"
+            showHeader={false}
+          />
+        </div>
+      </div>
+
+      <div class="how-it-works-process-grid reveal delay-2">
+        {courseData.howItWorks.processCards.map((card) => (
+          <article class="card how-it-works-process-card">
+            <div class="how-it-works-process-top">
+              <span class="how-it-works-process-accent" aria-hidden="true"></span>
+              <h3 class="how-it-works-process-title">{card.title}</h3>
+            </div>
+            <p class="how-it-works-process-copy">{card.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="how-it-works-tip-wrap reveal delay-3">
+        <aside class="how-it-works-tip" aria-label="Tip">
+          <div class="how-it-works-tip-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              class="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 18h6" />
+              <path d="M10 22h4" />
+              <path d="M12 2a7 7 0 0 0-4 12.75c.6.42 1 1.09 1 1.82V18h6v-1.43c0-.73.4-1.4 1-1.82A7 7 0 0 0 12 2Z" />
+            </svg>
+          </div>
+
+          <p class="how-it-works-tip-text">
+            <em>{courseData.howItWorks.tip}</em>
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section scroll-mt-28" id={courseData.keyConsiderations.id}>
+    <div class="container">
+      <div class="key-considerations-shell">
+        <div class="key-considerations-header reveal">
+          <h2 class="section-title key-considerations-title">{courseData.keyConsiderations.title}</h2>
         </div>
 
-        <div class="mt-8">
-          <HeroProduct product={category.heroProduct} />
-        </div>
-
-        <div class="grid-3 mt-6 items-stretch md:mt-8">
-          {category.products.map((product, index) => (
-            <ProductCard
-              product={product}
-              index={index + categoryIndex * 10}
-            />
+        <div class="key-considerations-grid reveal delay-1">
+          {courseData.keyConsiderations.statements.map((statement) => (
+            <article class="card key-considerations-card">
+              <span class="key-considerations-accent" aria-hidden="true"></span>
+              <p class="key-considerations-copy">{statement}</p>
+            </article>
           ))}
         </div>
-      </div>
-    </section>
-  ))}
 
-  <SellingSteps steps={courseData.sellingSteps} />
+        <div class="key-considerations-tip-wrap reveal delay-2">
+          <aside class="key-considerations-tip" aria-label="Tip">
+            <div class="key-considerations-tip-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 18h6" />
+                <path d="M10 22h4" />
+                <path d="M12 2a7 7 0 0 0-4 12.75c.6.42 1 1.09 1 1.82V18h6v-1.43c0-.73.4-1.4 1-1.82A7 7 0 0 0 12 2Z" />
+              </svg>
+            </div>
 
-  <ScenarioCard
-    questions={courseData.scenario.questions}
-  />
+            <p class="key-considerations-tip-text">
+              <em>{courseData.keyConsiderations.tip}</em>
+            </p>
+          </aside>
+        </div>
 
-  <section class="border-t border-slate-200 bg-slate-50 py-16">
-    <div class="container">
-      <div class="mx-auto flex max-w-3xl flex-col items-center justify-center text-center">
-        <h2 class="completion-title">
-          You've completed the course
-        </h2>
-        <p
-          class="completion-link mt-8 inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-3 text-white shadow-md"
-        >
-          Return to People Connect
-        </p>
+        <div class="key-considerations-question reveal delay-3">
+          <ScenarioCard
+            id={`${courseData.keyConsiderations.id}-question`}
+            embedded={true}
+            showHeader={false}
+            showProgress={false}
+            idleFeedbackMessage=""
+            question={courseData.keyConsiderations.question.question}
+            options={courseData.keyConsiderations.question.options}
+            correctIndex={courseData.keyConsiderations.question.correctIndex}
+            optionFeedback={courseData.keyConsiderations.question.optionFeedback}
+          />
+        </div>
       </div>
     </div>
   </section>
+
+  <section class="section scroll-mt-28" id={courseData.wrapUp.id}>
+    <div class="container">
+      <div class="wrap-up-shell card reveal">
+        <div class="wrap-up-grid">
+          <div class="wrap-up-copy">
+            <h2 class="section-title wrap-up-title">{courseData.wrapUp.title}</h2>
+            <p class="wrap-up-supporting">{courseData.wrapUp.intro}</p>
+            {courseData.wrapUp.body.map((paragraph) => (
+              <p class="wrap-up-body">{paragraph}</p>
+            ))}
+          </div>
+
+          <div class="wrap-up-media">
+            <img
+              class="wrap-up-image"
+              src={courseData.wrapUp.imageSrc}
+              alt={courseData.wrapUp.imageAlt}
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="course-footer" aria-label="Course footer">
+    <div class="container">
+      <div class="course-footer-shell reveal">
+        <p class="course-footer-message">{courseData.footer.message}</p>
+
+        <a
+          class="course-footer-link"
+          href={courseData.footer.peopleConnectUrl}
+          aria-label={courseData.footer.buttonLabel}
+        >
+          <span>{courseData.footer.buttonLabel}</span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            class="course-footer-link-icon"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
 </CourseLayout>

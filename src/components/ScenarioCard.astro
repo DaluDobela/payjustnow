@@ -3,7 +3,8 @@ interface ScenarioQuestion {
   question: string;
   options: string[];
   correctIndex: number;
-  feedback: string;
+  feedback?: string;
+  optionFeedback?: string[];
 }
 
 interface Props {
@@ -12,6 +13,12 @@ interface Props {
   options?: string[];
   correctIndex?: number;
   feedback?: string;
+  optionFeedback?: string[];
+  id?: string;
+  embedded?: boolean;
+  showHeader?: boolean;
+  showProgress?: boolean;
+  idleFeedbackMessage?: string;
 }
 
 const {
@@ -20,6 +27,12 @@ const {
   options,
   correctIndex,
   feedback,
+  optionFeedback,
+  id = "scenario-activity",
+  embedded = false,
+  showHeader = true,
+  showProgress = true,
+  idleFeedbackMessage,
 } = Astro.props;
 
 const normalizedQuestions =
@@ -28,22 +41,126 @@ const normalizedQuestions =
     : question &&
         options &&
         typeof correctIndex === "number" &&
-        feedback
+        (feedback || optionFeedback)
       ? [
           {
             question,
             options,
             correctIndex,
             feedback,
+            optionFeedback,
           },
         ]
       : [];
 
 const hasMultipleQuestions = normalizedQuestions.length > 1;
-const defaultFeedbackMessage = "Choose an answer to see feedback.";
+const resolvedIdleFeedbackMessage =
+  typeof idleFeedbackMessage === "string"
+    ? idleFeedbackMessage
+    : "Choose an answer to see feedback.";
 ---
+{embedded ? (
+  <div
+    class="card scenario-card-embedded"
+    data-scenario-root
+    data-idle-feedback-message={resolvedIdleFeedbackMessage}
+  >
+    {normalizedQuestions.map((item, questionIndex) => (
+      <div
+        class:list={["scenario-question", "scenario-question-embedded", questionIndex !== 0 && "hidden"]}
+        data-scenario-panel
+        data-question-index={questionIndex}
+      >
+        <div class="card p-6 scenario-question-card">
+          <p class="scenario-question-text">{item.question}</p>
+        </div>
 
-<section class="section scroll-mt-28" id="scenario-activity">
+        <div class="mt-6 grid gap-4">
+          {item.options.map((option, optionIndex) => (
+            <button
+              type="button"
+              class:list={[
+                "scenario-option flex w-full items-start gap-3 transition-colors data-[selected=true]:bg-slate-100 data-[selected=true]:border-slate-200 data-[state=correct]:border-green-200 data-[state=correct]:bg-green-50 data-[state=incorrect]:border-slate-200 data-[state=incorrect]:bg-slate-50",
+                "scenario-option-embedded",
+              ]}
+              data-scenario-option
+              data-feedback={item.optionFeedback?.[optionIndex] || item.feedback || ""}
+              data-correct={optionIndex === item.correctIndex ? "true" : "false"}
+              data-selected="false"
+              data-state="idle"
+              aria-pressed="false"
+              aria-describedby={`feedback-${id}-${questionIndex}`}
+            >
+              <span class="shrink-0 font-bold scenario-option-badge">
+                {String.fromCharCode(65 + optionIndex)}
+              </span>
+              <span class="min-w-0 flex-1">{option}</span>
+            </button>
+          ))}
+        </div>
+
+        <div
+          class="card flex min-h-[96px] items-start gap-3 p-4 data-[status=correct]:border-green-200 data-[status=correct]:bg-green-50 data-[status=incorrect]:border-slate-200 data-[status=incorrect]:bg-slate-50 scenario-feedback-panel"
+          data-feedback-panel
+          data-status="idle"
+          aria-live="polite"
+          id={`feedback-${id}-${questionIndex}`}
+          hidden={resolvedIdleFeedbackMessage === ""}
+        >
+          <span class="mt-0.5 inline-flex shrink-0 items-center justify-center">
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              class="h-5 w-5 text-[var(--muted)]"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-feedback-idle
+            >
+              <path d="M12 18h.01" />
+              <path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3" />
+              <circle cx="12" cy="12" r="9" />
+            </svg>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              class="hidden h-5 w-5 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-feedback-correct
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="m8.5 12 2.5 2.5 4.5-5" />
+            </svg>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              class="hidden h-5 w-5 text-slate-400"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-feedback-incorrect
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="M9 9l6 6" />
+              <path d="m15 9-6 6" />
+            </svg>
+          </span>
+          <span data-feedback-message>{resolvedIdleFeedbackMessage}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+<section class="section scroll-mt-28" id={id}>
+  {showHeader && (
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div class="absolute right-[-5rem] top-16 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(226,232,240,0.38),rgba(226,232,240,0.08)_46%,transparent_74%)] blur-3xl"></div>
     <div class="absolute left-[-4rem] bottom-16 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.46),rgba(255,255,255,0.1)_44%,transparent_72%)] blur-3xl"></div>
@@ -52,14 +169,17 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
       style={`background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='300' viewBox='0 0 1400 300' fill='none'%3E%3Cpath d='M-80 190c160-76 313-92 486-40 141 42 268 45 398 7 141-41 275-35 430 8 106 30 208 31 330-8' stroke='%23cbd5e1' stroke-width='1.4' stroke-opacity='0.52'/%3E%3Cpath d='M-40 236c188-60 353-67 524-18 131 38 256 41 381 9 138-35 273-28 433 16' stroke='%2394a3b8' stroke-width='1.2' stroke-opacity='0.42'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center top;background-size:cover;`}
     ></div>
   </div>
+  )}
 
   <div class="container relative z-10">
     <div
       class="card"
       style="padding:2rem; background:rgba(255,255,255,0.9);"
       data-scenario-root
+      data-idle-feedback-message={resolvedIdleFeedbackMessage}
     >
       <div class="grid gap-6 xl:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] xl:gap-10">
+        {showHeader && (
         <div class="space-y-4">
           <span class="editorial-kicker">Lesson 7</span>
 
@@ -83,7 +203,7 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
             </h2>
           </div>
 
-          {hasMultipleQuestions && (
+          {hasMultipleQuestions && showProgress && (
             <div
               class="inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-[var(--muted)]"
               style="background:rgba(27,31,34,0.04); border:1px solid var(--line);"
@@ -105,6 +225,7 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
             </div>
           )}
         </div>
+        )}
       </div>
 
       <div class="mt-8">
@@ -120,26 +241,30 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
           >
             <div class="space-y-6">
               <div
-                class="card p-6"
-                style="background:rgba(255,255,255,0.72);"
+                class:list={["card p-6", embedded && "scenario-question-card"]}
+                style={embedded ? undefined : "background:rgba(255,255,255,0.72);"}
               >
-                <p class="section-copy max-w-none flex items-start gap-3">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    class="mt-1 h-5 w-5 shrink-0 text-[var(--muted)]"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M12 18h.01" />
-                    <path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3" />
-                    <circle cx="12" cy="12" r="9" />
-                  </svg>
-                  <span>{item.question}</span>
-                </p>
+                {embedded ? (
+                  <p class="scenario-question-text">{item.question}</p>
+                ) : (
+                  <p class="section-copy max-w-none flex items-start gap-3">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      class="mt-1 h-5 w-5 shrink-0 text-[var(--muted)]"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M12 18h.01" />
+                      <path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3" />
+                      <circle cx="12" cy="12" r="9" />
+                    </svg>
+                    <span>{item.question}</span>
+                  </p>
+                )}
               </div>
 
               <div
@@ -148,6 +273,8 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
                 data-feedback-panel
                 data-status="idle"
                 aria-live="polite"
+                id={`feedback-${id}-${questionIndex}`}
+                hidden={resolvedIdleFeedbackMessage === ""}
               >
                 <span class="mt-0.5 inline-flex shrink-0 items-center justify-center">
                   <svg
@@ -195,7 +322,7 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
                     <path d="m15 9-6 6" />
                   </svg>
                 </span>
-                <span data-feedback-message>{defaultFeedbackMessage}</span>
+                <span data-feedback-message>{resolvedIdleFeedbackMessage}</span>
               </div>
             </div>
 
@@ -204,13 +331,16 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
                 {item.options.map((option, optionIndex) => (
                   <button
                     type="button"
-                    class="scenario-option flex w-full items-start gap-3 transition-colors data-[selected=true]:bg-slate-100 data-[selected=true]:border-slate-200 data-[state=correct]:border-green-200 data-[state=correct]:bg-green-50 data-[state=incorrect]:border-slate-200 data-[state=incorrect]:bg-slate-50"
+                    class:list={[
+                      "scenario-option flex w-full items-start gap-3 transition-colors data-[selected=true]:bg-slate-100 data-[selected=true]:border-slate-200 data-[state=correct]:border-green-200 data-[state=correct]:bg-green-50 data-[state=incorrect]:border-slate-200 data-[state=incorrect]:bg-slate-50",
+                    ]}
                     data-scenario-option
-                    data-feedback={item.feedback}
+                    data-feedback={item.optionFeedback?.[optionIndex] || item.feedback || ""}
                     data-correct={optionIndex === item.correctIndex ? "true" : "false"}
                     data-selected="false"
                     data-state="idle"
                     aria-pressed="false"
+                    aria-describedby={`feedback-${id}-${questionIndex}`}
                   >
                     <span class="shrink-0 font-bold">{String.fromCharCode(65 + optionIndex)}.</span>
                     <span class="min-w-0 flex-1">{option}</span>
@@ -218,7 +348,7 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
                 ))}
               </div>
 
-              {hasMultipleQuestions && (
+              {hasMultipleQuestions && showProgress && (
                 <div class="flex flex-wrap items-center gap-2 pt-2">
                   <button
                     type="button"
@@ -245,99 +375,105 @@ const defaultFeedbackMessage = "Choose an answer to see feedback.";
     </div>
   </div>
 </section>
+)}
 
 <script is:inline>
-  const scenarioRoots = document.querySelectorAll("[data-scenario-root]");
-  const defaultFeedbackMessage = "Choose an answer to see feedback.";
-  const incorrectFeedbackMessage =
-    "Not quite. Think about which option best matches the customer need and creates more value.";
+  (() => {
+    const scenarioRoots = document.querySelectorAll("[data-scenario-root]");
 
-  for (const root of scenarioRoots) {
-    if (root.dataset.initialized === "true") continue;
-    root.dataset.initialized = "true";
+    for (const root of scenarioRoots) {
+      if (root.dataset.initialized === "true") continue;
+      root.dataset.initialized = "true";
+      const defaultFeedbackMessage = root.dataset.idleFeedbackMessage || "";
 
-    const panels = Array.from(root.querySelectorAll("[data-scenario-panel]"));
-    const prevButtons = Array.from(root.querySelectorAll("[data-prev-button]"));
-    const nextButtons = Array.from(root.querySelectorAll("[data-next-button]"));
-    const stepCurrent = root.querySelector("[data-step-current]");
-    const stepTotal = root.querySelector("[data-step-total]");
-    let currentIndex = 0;
+      const panels = Array.from(root.querySelectorAll("[data-scenario-panel]"));
+      const prevButtons = Array.from(root.querySelectorAll("[data-prev-button]"));
+      const nextButtons = Array.from(root.querySelectorAll("[data-next-button]"));
+      const stepCurrent = root.querySelector("[data-step-current]");
+      const stepTotal = root.querySelector("[data-step-total]");
+      let currentIndex = 0;
 
-    const updateFeedbackPanel = (panel, status, message) => {
-      const feedbackPanel = panel.querySelector("[data-feedback-panel]");
-      const feedbackMessage = panel.querySelector("[data-feedback-message]");
-      const idleIcon = panel.querySelector("[data-feedback-idle]");
-      const correctIcon = panel.querySelector("[data-feedback-correct]");
-      const incorrectIcon = panel.querySelector("[data-feedback-incorrect]");
+      const updateFeedbackPanel = (panel, status, message) => {
+        const feedbackPanel = panel.querySelector("[data-feedback-panel]");
+        const feedbackMessage = panel.querySelector("[data-feedback-message]");
+        const idleIcon = panel.querySelector("[data-feedback-idle]");
+        const correctIcon = panel.querySelector("[data-feedback-correct]");
+        const incorrectIcon = panel.querySelector("[data-feedback-incorrect]");
 
-      if (!feedbackPanel || !feedbackMessage) return;
+        if (!feedbackPanel || !feedbackMessage) return;
 
-      feedbackPanel.dataset.status = status;
-      feedbackMessage.textContent = message;
+        feedbackPanel.dataset.status = status;
+        feedbackMessage.textContent = message;
+        feedbackPanel.hidden = status === "idle" && message === "";
 
-      if (idleIcon) idleIcon.classList.toggle("hidden", status !== "idle");
-      if (correctIcon) correctIcon.classList.toggle("hidden", status !== "correct");
-      if (incorrectIcon) incorrectIcon.classList.toggle("hidden", status !== "incorrect");
-    };
+        if (idleIcon) idleIcon.classList.toggle("hidden", status !== "idle");
+        if (correctIcon) correctIcon.classList.toggle("hidden", status !== "correct");
+        if (incorrectIcon) incorrectIcon.classList.toggle("hidden", status !== "incorrect");
+      };
 
-    const updateNavigation = () => {
-      panels.forEach((panel, panelIndex) => {
-        panel.classList.toggle("hidden", panelIndex !== currentIndex);
-      });
+      const updateNavigation = () => {
+        panels.forEach((panel, panelIndex) => {
+          panel.classList.toggle("hidden", panelIndex !== currentIndex);
+        });
 
-      if (stepCurrent) stepCurrent.textContent = String(currentIndex + 1);
-      if (stepTotal) stepTotal.textContent = String(panels.length);
-      prevButtons.forEach((button) => {
-        button.disabled = currentIndex === 0;
-      });
-      nextButtons.forEach((button) => {
-        button.disabled = currentIndex === panels.length - 1;
-      });
-    };
+        if (stepCurrent) stepCurrent.textContent = String(currentIndex + 1);
+        if (stepTotal) stepTotal.textContent = String(panels.length);
+        prevButtons.forEach((button) => {
+          button.disabled = currentIndex === 0;
+        });
+        nextButtons.forEach((button) => {
+          button.disabled = currentIndex === panels.length - 1;
+        });
+      };
 
-    panels.forEach((panel) => {
-      const buttons = Array.from(panel.querySelectorAll("[data-scenario-option]"));
+      panels.forEach((panel) => {
+        const buttons = Array.from(panel.querySelectorAll("[data-scenario-option]"));
 
-      buttons.forEach((button) => {
-        button.addEventListener("click", () => {
-          buttons.forEach((item) => {
-            item.dataset.selected = "false";
-            item.dataset.state = "idle";
-            item.setAttribute("aria-pressed", "false");
+        buttons.forEach((button) => {
+          button.addEventListener("click", () => {
+            buttons.forEach((item) => {
+              item.dataset.selected = "false";
+              item.dataset.state = "idle";
+              item.setAttribute("aria-pressed", "false");
+            });
+
+            button.dataset.selected = "true";
+            button.setAttribute("aria-pressed", "true");
+
+            if (button.dataset.correct === "true") {
+              button.dataset.state = "correct";
+              updateFeedbackPanel(
+                panel,
+                "correct",
+                button.dataset.feedback || defaultFeedbackMessage,
+              );
+            } else {
+              button.dataset.state = "incorrect";
+              updateFeedbackPanel(
+                panel,
+                "incorrect",
+                button.dataset.feedback || defaultFeedbackMessage,
+              );
+            }
           });
-
-          button.dataset.selected = "true";
-          button.setAttribute("aria-pressed", "true");
-
-          if (button.dataset.correct === "true") {
-            button.dataset.state = "correct";
-            updateFeedbackPanel(
-              panel,
-              "correct",
-              button.dataset.feedback || defaultFeedbackMessage,
-            );
-          } else {
-            button.dataset.state = "incorrect";
-            updateFeedbackPanel(panel, "incorrect", incorrectFeedbackMessage);
-          }
         });
       });
-    });
 
-    prevButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        currentIndex = Math.max(0, currentIndex - 1);
-        updateNavigation();
+      prevButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          currentIndex = Math.max(0, currentIndex - 1);
+          updateNavigation();
+        });
       });
-    });
 
-    nextButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        currentIndex = Math.min(panels.length - 1, currentIndex + 1);
-        updateNavigation();
+      nextButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          currentIndex = Math.min(panels.length - 1, currentIndex + 1);
+          updateNavigation();
+        });
       });
-    });
 
-    updateNavigation();
-  }
+      updateNavigation();
+    }
+  })();
 </script>

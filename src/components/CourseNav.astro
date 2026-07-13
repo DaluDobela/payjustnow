@@ -1,6 +1,26 @@
+---
+interface NavSection {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  brandName: string;
+  logoSrc: string;
+  sections: NavSection[];
+}
+
+const { brandName, logoSrc, sections } = Astro.props as Props;
+---
+
 <nav class="course-nav" data-course-nav>
   <div class="container course-nav-inner">
-    <a href="#top" class="course-nav-brand block truncate">Brabantia</a>
+    <a href="#top" class="course-nav-brand">
+      <span class="course-nav-mark" aria-hidden="true">
+        <img src={logoSrc} alt="" class="course-nav-mark-image" />
+      </span>
+      <span class="course-nav-brand-text">{brandName}</span>
+    </a>
 
     <button
       class="course-nav-toggle shrink-0"
@@ -20,12 +40,17 @@
     </button>
 
     <div id="course-nav-menu" class="course-nav-links w-full md:w-auto">
-      <a href="#range-overview" class="whitespace-nowrap">Range</a>
-      <a href="#kitchen-appliances" class="whitespace-nowrap">Kitchen</a>
-      <a href="#garment-care" class="whitespace-nowrap">Garment Care</a>
-      <a href="#home-solutions" class="whitespace-nowrap">Home Solutions</a>
-      <a href="#selling-method" class="whitespace-nowrap">How to Sell</a>
-      <a href="#scenario-activity" class="whitespace-nowrap">Activity</a>
+      {sections.map((section, index) => (
+        <a
+          href={`#${section.id}`}
+          class="whitespace-nowrap"
+          data-nav-link
+          data-target-id={section.id}
+          aria-current={index === 0 ? "true" : "false"}
+        >
+          {section.label}
+        </a>
+      ))}
     </div>
   </div>
 </nav>
@@ -39,7 +64,10 @@
 
     const toggle = navRoot.querySelector(".course-nav-toggle");
     const menu = navRoot.querySelector("#course-nav-menu");
-    const links = navRoot.querySelectorAll("a[href^='#']");
+    const links = Array.from(navRoot.querySelectorAll("[data-nav-link]"));
+    const sections = links
+      .map((link) => document.getElementById(link.dataset.targetId || ""))
+      .filter(Boolean);
 
     const closeMenu = () => {
       if (!menu || !toggle) return;
@@ -47,8 +75,17 @@
       toggle.setAttribute("aria-expanded", "false");
     };
 
+    const setActiveLink = (targetId) => {
+      links.forEach((link) => {
+        const isActive = link.dataset.targetId === targetId;
+        link.classList.toggle("active", isActive);
+        link.setAttribute("aria-current", String(isActive));
+      });
+    };
+
     links.forEach((link) => {
       link.addEventListener("click", () => {
+        setActiveLink(link.dataset.targetId || "");
         if (window.innerWidth <= 900) {
           closeMenu();
         }
@@ -60,5 +97,26 @@
         closeMenu();
       }
     });
+
+    if (sections.length > 0) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visibleEntry = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+          if (visibleEntry?.target?.id) {
+            setActiveLink(visibleEntry.target.id);
+          }
+        },
+        {
+          rootMargin: "-30% 0px -45% 0px",
+          threshold: [0.2, 0.4, 0.6],
+        },
+      );
+
+      sections.forEach((section) => observer.observe(section));
+      setActiveLink(sections[0].id);
+    }
   }
 </script>
