@@ -44,6 +44,8 @@ export const courseData = {
   welcome: {
     title: "Welcome",
     subtitle: "By the end of this course, you will be able to:",
+    heroImageSrc: "/images/payjustnow/payjustnow-hero.png",
+    heroImageAlt: "PayJustNow app shown on a phone between pink abstract forms.",
     points: [
       "Identify what PayJustNow is and when it is the right option for a customer.",
       "Work out the correct instalment amounts and dates, and recommend the right plan, either the three month plan or PayStretch, for a given purchase.",
@@ -59,26 +61,41 @@ export const courseData = {
       "PayJustNow is a South African Buy Now, Pay Later payment solution. It allows a customer to take their purchase home on the same day and split the cost into three equal, interest free instalments, as long as each instalment is paid on time.",
     tip:
       "TIP: Always mention that the plan is interest free only if instalments are paid on time.",
-  },
-  paymentPlans: {
-    id: "payment-plans",
-    eyebrow: "",
-    title: "Payment Plans",
-    intro:
-      "Now that you know what PayJustNow is, the next question a customer will ask is almost always about the money. Let's break that down.",
     question: {
       question:
         "A customer wants to buy a jacket worth R1200 today using PayJustNow. How much would they need to pay today to take the jacket home?",
       options: [
-        "R400 (a third of the purchase price).",
-        "R1200 (the full amount).",
-        "Nothing today, only once the item is delivered.",
+        "R400 (a third of the purchase price)",
+        "R1200 (the full amount)",
+        "Nothing today, only once the item is delivered",
       ],
       correctIndex: 0,
       optionFeedback: [
         "That's correct. PayJustNow splits the purchase into three equal payments, so the customer pays a third today and takes the jacket home immediately.",
         "Not quite. With PayJustNow, the customer doesn't need to pay the full amount upfront, just the first of three instalments.",
-        "Not quite. PayJustNow requires the first instalment to be paid at the time of purchase, not at a later date.",
+        "Not quite. PayJustNow requires the first instalment to be paid at the time of purchase, not at a later date",
+      ],
+    } as ScenarioQuestion,
+  },
+  paymentPlans: {
+    id: "payment-plans",
+    eyebrow: "",
+    title: "Payment Structure & PayStretch",
+    intro:
+      "Now that you know what PayJustNow is, the next question a customer will ask is almost always about the money. Let's break that down.",
+    question: {
+      question:
+        "A customer buys a jacket on the 15th of January using the three month plan. When is the final instalment due?",
+      options: [
+        "15th of February",
+        "13th of January",
+        "15th of March",
+      ],
+      correctIndex: 2,
+      optionFeedback: [
+        "Not quite. The final instalment is due two months after the purchase date, on the same day of the month.",
+        "Not quite. The final instalment would not be due in January. It is due two months after the purchase date.",
+        "Correct. The final instalment is due on the same day of the month two months later, so it would be due on the 15th of March.",
       ],
     } as ScenarioQuestion,
     cards: [
@@ -86,16 +103,13 @@ export const courseData = {
         title: "The three month plan",
         body: [
           "The three month plan splits any purchase into three equal instalments.",
-          "For simplicity, and to match how the PayJustNow app itself displays due dates to a customer, each instalment is due on the same date one month and two months after the date of purchase.",
-          "There are no hidden fees on the three month plan.",
+          "For simplicity, and to match how the PayJustNow app itself displays due dates to a customer. This way treats each instalment as due on the same date, one month and two months after the date of purchase.",
         ],
       },
       {
         title: "PayStretch",
         body: [
-          "For bigger purchases, PayStretch spreads the cost over twelve months instead.",
-          "A small, transparent interest rate is shown clearly before the customer confirms.",
-          "Mention PayStretch whenever a customer is buying a big basket item, such as furniture or electronics.",
+          "For bigger purchases, PayStretch spreads the cost over twelve months instead, with a small, transparent interest rate shown clearly before the customer confirms. There are no hidden fees on either plan.",
         ],
       },
     ] as SectionCard[],
@@ -152,7 +166,7 @@ export const courseData = {
       "If a customer worries about their credit score, reassure them clearly that the check is a soft check only. Being specific here, rather than vague, will give the customer reassurance.",
     question: {
       question:
-        "A customer is worried this will affect my credit score.\n\nWhich response is both accurate and reassuring?",
+        "A customer is worried this will affect my credit score. Which response is both accurate and reassuring?",
       options: [
         "“It might affect it a little, but it is usually fine.”",
         "“Do not worry, there is no check done at all.”",

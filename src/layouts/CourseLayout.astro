@@ -25,7 +25,7 @@ const {
 
     <style is:global>
       :root {
-        --bg: #f6f1e8;
+        --bg: #ffffff;
         --surface: rgba(255, 255, 255, 0.9);
         --surface-strong: #ffffff;
         --surface-soft: #fbf7ef;
@@ -56,6 +56,7 @@ const {
         --type-body: clamp(1rem, 1.2vw, 1.125rem);
         --type-ui: 0.92rem;
         --type-label: 12px;
+        --block-space: clamp(3rem, 5vw, 4.5rem);
       }
 
       * {
@@ -74,10 +75,7 @@ const {
         color: var(--text);
         position: relative;
         overflow-x: hidden;
-        background:
-          radial-gradient(circle at top right, rgba(214, 255, 0, 0.16), transparent 34%),
-          radial-gradient(circle at left center, rgba(255, 255, 255, 0.7), transparent 38%),
-          linear-gradient(to bottom, #fdf9f1, var(--bg));
+        background: #ffffff;
       }
 
       body.pdf-layout {
@@ -112,7 +110,7 @@ const {
         position: relative;
         padding: 0.75rem 1rem;
         border-radius: 999px;
-        background: rgba(52, 59, 66, 0.96);
+        background: #000000;
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 20px 38px rgba(18, 20, 22, 0.14);
       }
@@ -590,6 +588,36 @@ const {
         text-align: center;
       }
 
+      .basics-payment-intro {
+        margin-top: calc(1.5rem + 20px);
+      }
+
+      .basics-payment-transition {
+        margin-top: 40px;
+      }
+
+      .basics-question-block {
+        width: 100%;
+        margin-block: var(--block-space);
+      }
+
+      .payment-plans-shell {
+        width: 100%;
+        display: grid;
+        gap: 1.75rem;
+      }
+
+      .payment-plans-header {
+        max-width: 44rem;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .payment-plans-title {
+        margin-bottom: 0;
+        font-size: clamp(1.95rem, 3.4vw, 2.8rem);
+      }
+
       .payment-plans-intro-copy {
         margin: 0;
         color: var(--muted);
@@ -597,11 +625,78 @@ const {
         line-height: 1.8;
       }
 
+      .basics-payment-transition-copy {
+        font-weight: 700;
+      }
+
+      .payment-plans-copy {
+        max-width: 54rem;
+        margin: 0 auto;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .payment-plans-copy-paragraph {
+        margin: 0;
+        color: var(--muted);
+        font-size: var(--type-body);
+        line-height: 1.8;
+        text-align: center;
+      }
+
+      .payment-plans-copy-accent {
+        width: 5.5rem;
+        height: 0.25rem;
+        margin: 0.2rem auto 0;
+        border-radius: 999px;
+        background: var(--lime);
+        display: block;
+      }
+
+      .payment-plans-video-block {
+        max-width: 60rem;
+        margin: 0 auto;
+      }
+
+      .payment-plans-media {
+        width: 100%;
+        max-width: 68rem;
+        margin: 2rem auto 0;
+      }
+
+      .payment-plans-subtitle {
+        margin: 0 0 1rem;
+        color: var(--text);
+        font-family: var(--font-display);
+        font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+        line-height: 1.15;
+        text-align: center;
+      }
+
+      .payment-plans-tip {
+        width: min(100%, 860px);
+        margin: var(--block-space) auto 0;
+      }
+
+      .payment-plans-tip-text {
+        display: block;
+      }
+
+      .payment-plans-tip-label {
+        display: inline;
+        color: #ffffff;
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-right: 0.35rem;
+      }
+
       .scenario-card-embedded {
         padding: clamp(1.35rem, 3vw, 2rem);
-        background: rgba(255, 255, 255, 0.96);
+        background: #e1e5e7;
         border: 1px solid rgba(18, 20, 22, 0.1);
-        box-shadow: var(--shadow-soft);
+        box-shadow: 0 18px 30px rgba(18, 20, 22, 0.28);
       }
 
       .scenario-card-embedded > .grid:first-child {
@@ -626,7 +721,7 @@ const {
         margin: 0;
         color: var(--text);
         font-size: clamp(1.2rem, 2.1vw, 1.55rem);
-        line-height: 1.45;
+        line-height: 1.15;
         font-weight: 800;
         white-space: pre-line;
       }
@@ -702,22 +797,17 @@ const {
       .hero-bg {
         position: absolute;
         inset: 0;
-        background:
-          radial-gradient(circle at 18% 18%, rgba(214, 255, 0, 0.14), transparent 0 24%),
-          radial-gradient(circle at 82% 24%, rgba(255, 255, 255, 0.08), transparent 0 22%),
-          linear-gradient(135deg, #687174 0%, #485159 45%, #31383f 100%);
+        background: #000000;
       }
 
       .hero-overlay {
         position: absolute;
         inset: 0;
-        background:
-          radial-gradient(circle at 12% 44%, rgba(255, 255, 255, 0.1), transparent 0 38%),
-          linear-gradient(
-            to bottom,
-            rgba(18, 20, 22, 0.06),
-            rgba(18, 20, 22, 0.2)
-          );
+        background: transparent;
+      }
+
+      .page-decor {
+        display: none;
       }
 
       .hero-inner {
@@ -771,45 +861,37 @@ const {
 
       .hero-logo-panel {
         justify-self: end;
-        width: min(100%, 330px);
+        width: min(100%, 380px);
         aspect-ratio: 1 / 1;
         display: grid;
         place-items: center;
-        padding: clamp(0.75rem, 2vw, 1.4rem);
+        padding: 0;
       }
 
       .hero-logo-frame {
         width: 100%;
         aspect-ratio: 1 / 1;
-        border-radius: clamp(1.8rem, 3vw, 2.4rem);
-        background: linear-gradient(160deg, #dbff28 0%, #bdd600 100%);
-        display: grid;
-        place-items: center;
-        padding: clamp(1rem, 2.3vw, 1.5rem);
-        box-shadow:
-          0 24px 52px rgba(18, 20, 22, 0.22),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border-radius: clamp(2rem, 3vw, 2.5rem);
+        display: block;
+        overflow: hidden;
       }
 
       .hero-logo-core {
         width: 100%;
         aspect-ratio: 1 / 1;
-        border-radius: clamp(1.4rem, 2.4vw, 1.9rem);
-        background: linear-gradient(180deg, #ecff4d 0%, #d6ff00 100%);
-        display: grid;
-        place-items: center;
-        padding: clamp(0.9rem, 1.8vw, 1.3rem);
-        box-shadow:
-          inset 0 10px 24px rgba(255, 255, 255, 0.14),
-          0 0 0 1px rgba(18, 20, 22, 0.06);
+        border-radius: inherit;
+        background: transparent;
+        display: block;
+        overflow: hidden;
       }
 
       .hero-logo-image {
-        width: 52%;
-        max-width: 160px;
-        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
         display: block;
-        filter: drop-shadow(0 14px 28px rgba(18, 20, 22, 0.18));
+        filter: none;
       }
 
       .hero-product-card {
@@ -997,7 +1079,7 @@ const {
       .basics-intro {
         max-width: 52rem;
         margin: 0;
-        color: var(--text);
+        color: #5d625d;
         line-height: 1.8;
       }
 
@@ -1019,7 +1101,7 @@ const {
         gap: 1rem;
         padding: 1.15rem 1.3rem;
         border-radius: 999px;
-        background: var(--charcoal);
+        background: #000000;
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 16px 32px rgba(18, 20, 22, 0.14);
       }
@@ -1039,7 +1121,7 @@ const {
       .basics-tip-text {
         margin: 0;
         min-width: 0;
-        color: rgba(255, 255, 255, 0.96);
+        color: #ffffff;
         line-height: 1.6;
         text-align: left;
       }
@@ -1049,7 +1131,7 @@ const {
       }
 
       .tip-callout {
-        background: var(--charcoal);
+        background: #000000;
         border-color: rgba(255, 255, 255, 0.08);
         color: #ffffff;
         display: grid;
@@ -1086,7 +1168,7 @@ const {
 
       .tip-callout-copy p {
         margin: 0;
-        color: rgba(255, 255, 255, 0.92);
+        color: #ffffff;
       }
 
       .video-card {
@@ -1207,7 +1289,7 @@ const {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1.4rem;
-        margin: 2rem auto 0;
+        margin: var(--block-space) auto 0;
       }
 
       .how-it-works-process-card {
@@ -1248,7 +1330,7 @@ const {
       }
 
       .how-it-works-tip-wrap {
-        margin-top: 1.6rem;
+        margin-top: var(--block-space);
       }
 
       .how-it-works-tip {
@@ -1260,7 +1342,7 @@ const {
         gap: 1rem;
         padding: 1.15rem 1.3rem;
         border-radius: 999px;
-        background: var(--charcoal);
+        background: #000000;
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 16px 32px rgba(18, 20, 22, 0.14);
       }
@@ -1280,7 +1362,7 @@ const {
       .how-it-works-tip-text {
         margin: 0;
         min-width: 0;
-        color: rgba(255, 255, 255, 0.96);
+        color: #ffffff;
         line-height: 1.6;
         text-align: left;
       }
@@ -1290,22 +1372,25 @@ const {
       }
 
       .payment-example-flow {
-        max-width: 52rem;
-        margin: 0 auto;
+        max-width: 60rem;
+        margin: var(--block-space) auto;
       }
 
       .payment-example-card {
-        padding: clamp(1.6rem, 3vw, 2.35rem);
-        background: rgba(255, 255, 255, 0.96);
+        padding: clamp(2.25rem, 4vw, 3.25rem);
+        background: #ffffff;
         border: 1px solid rgba(18, 20, 22, 0.1);
-        box-shadow: var(--shadow-soft);
+        border-radius: 30px;
+        box-shadow: 0 22px 40px rgba(18, 20, 22, 0.18);
       }
 
       .payment-example-title {
         margin: 0;
+        max-width: 40rem;
+        margin-inline: auto;
         color: var(--text);
         font-family: var(--font-display);
-        font-size: clamp(1.7rem, 3vw, 2.3rem);
+        font-size: clamp(2rem, 3.5vw, 2.85rem);
         line-height: 1.08;
         letter-spacing: -0.03em;
       }
@@ -1313,7 +1398,18 @@ const {
       .payment-example-copy {
         display: grid;
         gap: 1rem;
-        margin-top: 1.25rem;
+        max-width: 42rem;
+        margin-top: 1.5rem;
+        margin-inline: auto;
+      }
+
+      .payment-example-intro {
+        max-width: 42rem;
+        margin: 1.35rem 0 0;
+        margin-inline: auto;
+        color: var(--muted);
+        font-size: var(--type-body);
+        line-height: 1.85;
       }
 
       .payment-example-copy p {
@@ -1321,6 +1417,43 @@ const {
         color: var(--muted);
         font-size: var(--type-body);
         line-height: 1.8;
+      }
+
+      .payment-plans-example-timeline {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.95rem;
+        margin-top: 1.85rem;
+        margin-inline: auto;
+        width: 100%;
+        max-width: 42rem;
+      }
+
+      .payment-plans-example-step {
+        min-width: 0;
+        min-height: 108px;
+        padding: 1rem 1.15rem;
+        border-radius: 24px;
+        background: #f5f5f5;
+        border: 1px solid rgba(18, 20, 22, 0.1);
+        display: grid;
+        align-content: center;
+        gap: 0.5rem;
+      }
+
+      .payment-plans-example-label {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .payment-plans-example-date {
+        color: var(--text);
+        font-family: var(--font-display);
+        font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+        line-height: 1.25;
       }
 
       .payment-example-prompt {
@@ -1337,6 +1470,7 @@ const {
 
       .interactive-section-shell {
         width: 100%;
+        margin-block: var(--block-space);
       }
 
       .interactive-section-header {
@@ -1346,8 +1480,14 @@ const {
       }
 
       .interactive-section-title {
-        margin-bottom: 0;
-        font-size: clamp(1.9rem, 3.4vw, 2.75rem);
+        margin: 0;
+        color: var(--muted);
+        font-family: var(--font-body);
+        font-size: var(--type-body);
+        line-height: 1.8;
+        letter-spacing: 0;
+        font-weight: 700;
+        text-wrap: pretty;
       }
 
       .interactive-section-question {
@@ -1371,9 +1511,25 @@ const {
 
       .key-considerations-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.4rem;
-        margin-top: 1.5rem;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+        column-gap: 1rem;
+        row-gap: 1.4rem;
+        align-items: stretch;
+        margin-top: var(--block-space);
+      }
+
+      .key-considerations-arrow {
+        min-width: 2.75rem;
+        display: grid;
+        place-items: center;
+        align-self: center;
+        color: #000000;
+      }
+
+      .key-considerations-arrow-icon {
+        width: clamp(2.15rem, 2.8vw, 2.75rem);
+        height: clamp(2.15rem, 2.8vw, 2.75rem);
+        display: block;
       }
 
       .key-considerations-card {
@@ -1400,7 +1556,7 @@ const {
       }
 
       .key-considerations-tip-wrap {
-        margin-top: 1.6rem;
+        margin-top: var(--block-space);
       }
 
       .key-considerations-tip {
@@ -1412,7 +1568,7 @@ const {
         gap: 1rem;
         padding: 1.15rem 1.3rem;
         border-radius: 999px;
-        background: var(--charcoal);
+        background: #000000;
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 16px 32px rgba(18, 20, 22, 0.14);
       }
@@ -1432,7 +1588,7 @@ const {
       .key-considerations-tip-text {
         margin: 0;
         min-width: 0;
-        color: rgba(255, 255, 255, 0.96);
+        color: #ffffff;
         line-height: 1.6;
         text-align: left;
       }
@@ -1442,7 +1598,7 @@ const {
       }
 
       .key-considerations-question {
-        margin-top: 1.5rem;
+        margin-top: var(--block-space);
       }
 
       .steps-grid {
@@ -1496,55 +1652,59 @@ const {
 
       .wrap-up-shell {
         overflow: hidden;
-        padding: clamp(1.5rem, 3vw, 2.4rem);
-        background:
-          linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 242, 233, 0.92));
-        border: 1px solid rgba(18, 20, 22, 0.1);
-        box-shadow: var(--shadow-soft);
+        padding: clamp(2rem, 4vw, 3rem);
+        background: #000000;
+        border: 2px solid rgba(255, 255, 255, 0.94);
+        border-radius: 32px;
+        box-shadow: 0 18px 32px rgba(0, 0, 0, 0.28);
       }
 
       .wrap-up-grid {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(300px, 0.92fr);
-        gap: clamp(1.4rem, 3vw, 2.4rem);
+        gap: clamp(1.75rem, 3.5vw, 3rem);
         align-items: center;
       }
 
       .wrap-up-copy {
         min-width: 0;
+        max-width: 30rem;
       }
 
       .wrap-up-title {
         margin-bottom: 0.95rem;
         font-size: clamp(2rem, 4vw, 3rem);
+        color: #ffffff;
       }
 
       .wrap-up-supporting {
         margin: 0;
-        color: var(--text);
+        color: #ffffff;
         font-size: clamp(1.05rem, 1.8vw, 1.2rem);
         line-height: 1.6;
         font-weight: 700;
+        font-style: italic;
       }
 
       .wrap-up-body {
         margin: 1rem 0 0;
         max-width: 42rem;
-        color: var(--muted);
+        color: #ffffff;
         font-size: var(--type-body);
         line-height: 1.85;
       }
 
       .wrap-up-media {
         min-width: 0;
+        justify-self: end;
       }
 
       .wrap-up-image {
         display: block;
-        width: 100%;
+        width: min(100%, 420px);
         height: auto;
         border-radius: calc(var(--radius) - 8px);
-        box-shadow: 0 18px 36px rgba(18, 20, 22, 0.1);
+        margin-inline: auto 0;
       }
 
       .course-footer {
@@ -1553,22 +1713,27 @@ const {
 
       .course-footer-shell {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
         align-items: center;
         gap: 1rem 1.5rem;
-        padding: 1rem 1.2rem 1rem 2rem;
+        padding: 0.7rem 0.75rem 0.7rem 1.5rem;
         border-radius: 999px;
-        background: rgba(52, 59, 66, 0.96);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 20px 38px rgba(18, 20, 22, 0.14);
+        background: var(--lime);
+        border: 0;
+        box-shadow: 0 14px 28px rgba(18, 20, 22, 0.12);
+      }
+
+      .course-footer-spacer {
+        min-height: 1px;
       }
 
       .course-footer-message {
         margin: 0;
-        color: #ffffff;
-        font-size: clamp(1rem, 1.6vw, 1.15rem);
+        color: #000000;
+        font-size: clamp(0.95rem, 1.4vw, 1.05rem);
         line-height: 1.5;
         text-align: center;
+        justify-self: center;
       }
 
       .course-footer-link {
@@ -1577,19 +1742,20 @@ const {
         justify-content: center;
         gap: 0.8rem;
         min-height: 44px;
-        padding: 0.85rem 1.35rem;
+        padding: 0.8rem 1.2rem;
         border-radius: 999px;
         text-decoration: none;
-        color: #ffffff;
-        font-size: var(--type-body);
+        color: #000000;
+        font-size: 0.98rem;
         font-weight: 700;
-        background: rgba(255, 255, 255, 0.16);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+        background: #a8ca1a;
+        border: 0;
+        justify-self: end;
+        transition: background 0.2s ease, transform 0.2s ease;
       }
 
       .course-footer-link:hover {
-        background: rgba(255, 255, 255, 0.22);
+        background: #97b518;
         transform: translateY(-1px);
       }
 
@@ -1665,6 +1831,10 @@ const {
           grid-template-columns: 1fr;
         }
 
+        .payment-plans-example-timeline {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .basics-grid {
           grid-template-columns: 1fr;
         }
@@ -1673,22 +1843,27 @@ const {
           width: 100%;
         }
 
-        .key-considerations-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
         .key-considerations-tip {
           width: 100%;
         }
 
         .course-footer-shell {
           grid-template-columns: 1fr;
-          padding: 1.15rem;
+          padding: 1rem;
           border-radius: 2rem;
+        }
+
+        .course-footer-spacer {
+          display: none;
+        }
+
+        .course-footer-message {
+          justify-self: stretch;
         }
 
         .course-footer-link {
           width: 100%;
+          justify-self: stretch;
         }
       }
 
@@ -1710,7 +1885,7 @@ const {
 
         .hero-logo-panel {
           justify-self: end;
-          width: min(100%, 250px);
+          width: min(100%, 280px);
           padding: 0;
         }
       }
@@ -1738,7 +1913,7 @@ const {
 
         .hero-logo-panel {
           justify-self: center;
-          width: min(100%, 240px);
+          width: min(100%, 280px);
         }
 
         .basics-shell {
@@ -1818,12 +1993,12 @@ const {
           gap: 0.9rem;
         }
 
-        .payment-example-prompt {
-          margin-top: 1.15rem;
+        .payment-plans-example-timeline {
+          grid-template-columns: 1fr;
         }
 
-        .interactive-section-title {
-          font-size: clamp(1.75rem, 8vw, 2.2rem);
+        .payment-example-prompt {
+          margin-top: 1.15rem;
         }
 
         .interactive-section-question {
@@ -1836,6 +2011,15 @@ const {
 
         .key-considerations-grid {
           grid-template-columns: 1fr;
+        }
+
+        .key-considerations-arrow {
+          min-width: 0;
+          min-height: 2.5rem;
+        }
+
+        .key-considerations-arrow-icon {
+          transform: rotate(90deg);
         }
 
         .key-considerations-card {
@@ -1855,16 +2039,13 @@ const {
           align-self: start;
         }
 
-        .key-considerations-question {
-          margin-top: 1.2rem;
-        }
-
         .wrap-up-shell {
           padding: 1.25rem;
         }
 
         .wrap-up-copy {
           text-align: center;
+          margin-inline: auto;
         }
 
         .wrap-up-title {
@@ -1874,6 +2055,14 @@ const {
         .wrap-up-body {
           margin-top: 0.9rem;
           max-width: none;
+        }
+
+        .wrap-up-media {
+          justify-self: center;
+        }
+
+        .wrap-up-image {
+          margin-inline: auto;
         }
 
         .course-footer {

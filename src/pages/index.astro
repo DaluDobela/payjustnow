@@ -21,8 +21,8 @@ import { courseData } from "../data/payjustnow-course";
     title={courseData.welcome.title}
     subtitle={courseData.welcome.subtitle}
     points={courseData.welcome.points}
-    logoSrc={courseData.meta.logoSrc}
-    logoAlt={courseData.meta.logoAlt}
+    logoSrc={courseData.welcome.heroImageSrc}
+    logoAlt={courseData.welcome.heroImageAlt}
   />
 
   <section class="section scroll-mt-28" id={courseData.basics.id}>
@@ -58,6 +58,33 @@ import { courseData } from "../data/payjustnow-course";
                 <em>{courseData.basics.tip}</em>
               </p>
             </aside>
+
+            <div class="payment-plans-intro basics-payment-intro reveal">
+              <p class="payment-plans-intro-copy">
+                {courseData.paymentPlans.intro.replace(" Let's break that down.", "")}
+                <strong> Let's break that down.</strong>
+              </p>
+            </div>
+
+            <div class="basics-question-block">
+              <ScenarioCard
+                id={`${courseData.basics.id}-payment-check`}
+                embedded={true}
+                showHeader={false}
+                showProgress={false}
+                idleFeedbackMessage=""
+                question={courseData.basics.question.question}
+                options={courseData.basics.question.options}
+                correctIndex={courseData.basics.question.correctIndex}
+                optionFeedback={courseData.basics.question.optionFeedback}
+              />
+            </div>
+
+            <div class="payment-plans-intro basics-payment-transition reveal">
+              <p class="payment-plans-intro-copy basics-payment-transition-copy">
+                Now let's look at how those payments actually get split.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -66,11 +93,98 @@ import { courseData } from "../data/payjustnow-course";
 
   <section class="section scroll-mt-28" id={courseData.paymentPlans.id}>
     <div class="container">
-      <div class="payment-plans-intro reveal">
-        <p class="payment-plans-intro-copy">{courseData.paymentPlans.intro}</p>
+      <div class="payment-plans-shell">
+        <div class="payment-plans-header reveal">
+          <h2 class="section-title payment-plans-title">{courseData.paymentPlans.title}</h2>
+        </div>
+
+        <div class="payment-plans-copy reveal delay-1">
+          <p class="payment-plans-copy-paragraph">{courseData.paymentPlans.cards[0].body.join(" ")}</p>
+          <span class="payment-plans-copy-accent" aria-hidden="true"></span>
+        </div>
+
+        <div class="how-it-works-media payment-plans-media reveal delay-3">
+          <p class="how-it-works-video-intro">Watch the video to learn more.</p>
+          <div class="how-it-works-laptop">
+            <VideoCard
+              title={courseData.paymentPlans.video.title}
+              embedUrl={courseData.paymentPlans.video.embedUrl}
+              frame="laptop"
+              showHeader={false}
+            />
+          </div>
+        </div>
+
+        <div class="payment-plans-copy reveal delay-4">
+          {courseData.paymentPlans.cards[1].body.map((paragraph) => (
+            <p class="payment-plans-copy-paragraph">{paragraph}</p>
+          ))}
+        </div>
+
+        <aside class="payment-plans-tip basics-tip reveal delay-5" aria-label="Tip">
+          <div class="basics-tip-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              class="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 18h6" />
+              <path d="M10 22h4" />
+              <path d="M12 2a7 7 0 0 0-4 12.75c.6.42 1 1.09 1 1.82V18h6v-1.43c0-.73.4-1.4 1-1.82A7 7 0 0 0 12 2Z" />
+            </svg>
+          </div>
+
+          <p class="basics-tip-text payment-plans-tip-text">
+            <span class="payment-plans-tip-label">TIP:</span>
+            <em>
+              Mention PayStretch whenever a customer is buying a big basket item, such as furniture
+              or electronics, and always point out the interest rate before the customer confirms.
+            </em>
+            {" "}This will help build the trust of the customer.
+          </p>
+        </aside>
       </div>
 
-      <div class="mt-8">
+      <div class="payment-example-flow reveal delay-6">
+        <article class="card payment-example-card">
+          <h3 class="payment-example-title">{courseData.paymentPlans.exampleTitle}</h3>
+          <p class="payment-example-intro">{courseData.paymentPlans.exampleBody[0]}</p>
+
+          <div class="payment-plans-example-timeline">
+            <div class="payment-plans-example-step">
+              <span class="payment-plans-example-label">Purchase Date</span>
+              <strong class="payment-plans-example-date">1 March</strong>
+            </div>
+            <div class="payment-plans-example-step">
+              <span class="payment-plans-example-label">First Instalment</span>
+              <strong class="payment-plans-example-date">1 March</strong>
+            </div>
+            <div class="payment-plans-example-step">
+              <span class="payment-plans-example-label">Second Instalment</span>
+              <strong class="payment-plans-example-date">1 April</strong>
+            </div>
+            <div class="payment-plans-example-step">
+              <span class="payment-plans-example-label">Final Instalment</span>
+              <strong class="payment-plans-example-date">1 May</strong>
+            </div>
+          </div>
+
+          <div class="payment-example-copy">
+            <p>{courseData.paymentPlans.exampleBody[1]}</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="interactive-section-shell reveal delay-7">
+        <div class="interactive-section-header">
+          <h3 class="section-title interactive-section-title">Now try it yourself</h3>
+        </div>
+
+        <div class="interactive-section-question">
         <ScenarioCard
           id={courseData.paymentPlans.id}
           embedded={true}
@@ -82,6 +196,7 @@ import { courseData } from "../data/payjustnow-course";
           correctIndex={courseData.paymentPlans.question.correctIndex}
           optionFeedback={courseData.paymentPlans.question.optionFeedback}
         />
+        </div>
       </div>
     </div>
   </section>
@@ -89,7 +204,6 @@ import { courseData } from "../data/payjustnow-course";
   <section class="section scroll-mt-28" id={courseData.howItWorks.id}>
     <div class="container">
       <div class="how-it-works-header reveal">
-        <p class="how-it-works-transition">{courseData.howItWorks.transition}</p>
         <h2 class="section-title how-it-works-title">{courseData.howItWorks.title}</h2>
         <p class="section-copy how-it-works-requirement">{courseData.howItWorks.requirement}</p>
       </div>
@@ -152,12 +266,19 @@ import { courseData } from "../data/payjustnow-course";
         </div>
 
         <div class="key-considerations-grid reveal delay-1">
-          {courseData.keyConsiderations.statements.map((statement) => (
+          {courseData.keyConsiderations.statements.flatMap((statement, index) => [
+            index > 0 && (
+              <div class="key-considerations-arrow" aria-hidden="true">
+                <svg viewBox="0 0 64 64" class="key-considerations-arrow-icon">
+                  <path fill="currentColor" d="M6 28h34V14l18 18-18 18V36H6z"></path>
+                </svg>
+              </div>
+            ),
             <article class="card key-considerations-card">
               <span class="key-considerations-accent" aria-hidden="true"></span>
               <p class="key-considerations-copy">{statement}</p>
-            </article>
-          ))}
+            </article>,
+          ])}
         </div>
 
         <div class="key-considerations-tip-wrap reveal delay-2">
@@ -229,6 +350,7 @@ import { courseData } from "../data/payjustnow-course";
   <footer class="course-footer" aria-label="Course footer">
     <div class="container">
       <div class="course-footer-shell reveal">
+        <span class="course-footer-spacer" aria-hidden="true"></span>
         <p class="course-footer-message">{courseData.footer.message}</p>
 
         <a
